@@ -8,7 +8,7 @@ import org.junit.runners.JUnit4;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(JUnit4.class)
-public class FieldTest {
+public class FieldsTypeTest {
 
   private static final String DEFAULT_VALUE = "value";
 

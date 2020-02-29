@@ -8,7 +8,7 @@ import static com.adesormi.ankicardsgenerator.Color.*;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(JUnit4.class)
-public class ParserTest {
+public class KeyParsingTest {
 
   @Test
   public void givenEmptyValue_whenGetColorsMap_thenEmptyMap() {
