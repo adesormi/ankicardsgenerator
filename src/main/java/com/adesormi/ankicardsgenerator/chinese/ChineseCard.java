@@ -11,10 +11,11 @@ import com.google.common.collect.ImmutableList;
 class ChineseCard extends Card {
 
   ChineseCard(String baseValue, String logographicValue, String romanizedValue) {
-    super(ImmutableList.of(
+    super(
         new BaseField(baseValue),
-        new LogographicField(logographicValue),
-        new RomanizedField(romanizedValue))
+        ImmutableList.of(
+            new LogographicField(logographicValue),
+            new RomanizedField(romanizedValue))
     );
   }
 
@@ -34,10 +35,10 @@ class ChineseCard extends Card {
   }
 
   private ColorableField logographicField() {
-    return (ColorableField) fields.get(1);
+    return colorableFields.get(0);
   }
 
   private ColorableField romanizedField() {
-    return (ColorableField) fields.get(2);
+    return colorableFields.get(1);
   }
 }
