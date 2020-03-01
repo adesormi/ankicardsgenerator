@@ -37,12 +37,10 @@ public class ChineseCardTest {
 
   @Test
   public void format_wordWithNoKey_noFormatting() {
-    ChineseCard sameCard = new ChineseCard(BASE_VALUE, LOGOGRAPHIC_VALUE, ROMANIZED_VALUE);
-    assertThat(sameCard).isEqualTo(card);
+    card.format();
 
-    sameCard.format();
-
-    assertThat(sameCard).isEqualTo(card);
+    assertThat(card.getHanzi()).isEqualTo(LOGOGRAPHIC_VALUE);
+    assertThat(card.getPinyin()).isEqualTo(ROMANIZED_VALUE);
   }
 
   @Test
