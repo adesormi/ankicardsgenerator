@@ -1,31 +1,37 @@
 package com.adesormi.ankicardsgenerator;
 
-import com.adesormi.ankicardsgenerator.fields.BaseField;
-import com.adesormi.ankicardsgenerator.fields.ColorableField;
 import com.google.common.collect.ImmutableList;
 
-public abstract class Card {
+import java.util.Objects;
 
-  protected final ImmutableList<ColorableField> colorableFields;
-  private final BaseField baseField;
+class Card {
 
-  protected Card(BaseField baseField, ImmutableList<ColorableField> colorableFields) {
-    this.baseField = baseField;
-    this.colorableFields = colorableFields;
+  private final Field masterField;
+  private final ImmutableList<Field> fields;
+
+  protected Card(Field masterField, ImmutableList<Field> fields) {
+    this.masterField = masterField;
+    this.fields = fields;
   }
 
-  protected abstract void format();
+  void mapWordsWithColorKeys() {
+    ImmutableList<Integer> colorKeys =
+        ColorKeysMapGenerator.getColorKeysMap(masterField.getWords());
+    masterField.mapWordsWithColorKeys(colorKeys);
+    fields.forEach(f -> f.mapWordsWithColorKeys(colorKeys));
+  }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Card otherCard = (Card) o;
-    return baseField.equals(baseField) && colorableFields.equals(otherCard.colorableFields);
+    if (!(o instanceof Card)) return false;
+    Card card = (Card) o;
+    return Objects.equals(masterField, card.masterField) &&
+        Objects.equals(fields, card.fields);
   }
 
   @Override
   public int hashCode() {
-    return baseField.hashCode() + colorableFields.hashCode();
+    return Objects.hash(masterField, fields);
   }
 }
