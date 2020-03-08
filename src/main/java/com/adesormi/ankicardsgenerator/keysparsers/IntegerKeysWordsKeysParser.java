@@ -1,21 +1,23 @@
-package com.adesormi.ankicardsgenerator;
+package com.adesormi.ankicardsgenerator.keysparsers;
 
+import com.adesormi.ankicardsgenerator.Word;
 import com.google.common.collect.ImmutableList;
 
-class ColorKeysMapGenerator {
+public class IntegerKeysWordsKeysParser implements KeysParser {
 
-  static ImmutableList<Integer> getColorKeysMap(ImmutableList<Word> words) {
+  @Override
+  public ImmutableList<Integer> parseKeys(ImmutableList<Word> words) {
     ImmutableList.Builder<Integer> builder = ImmutableList.builder();
     words.forEach(w -> builder.add(getColorKey(w)));
     return builder.build();
   }
 
-  private static int getColorKey(Word word) {
+  private int getColorKey(Word word) {
     char lastChar = getLastCharacter(word.getValue());
     return Character.isDigit(lastChar) ? lastChar - '0' : 0;
   }
 
-  private static char getLastCharacter(String s) {
+  private char getLastCharacter(String s) {
     return s.charAt(s.length() - 1);
   }
 }
