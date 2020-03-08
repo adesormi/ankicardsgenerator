@@ -19,12 +19,17 @@ public class FieldTest {
 
   private static final ImmutableList<Integer> COLOR_KEYS = ImmutableList.of(1, 2);
   private static final int COLUMN_INDEX = 0;
+  private static final String VALUE = "word1 word2";
 
   @Mock KeysParser keysParser;
 
+  private Field field;
+
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     MockitoAnnotations.initMocks(this);
+
+    field = new EnglishField(keysParser, COLUMN_INDEX, VALUE);
   }
 
   @Test(expected = InvalidValueException.class)
@@ -38,9 +43,17 @@ public class FieldTest {
   }
 
   @Test
-  public void colorWords_colorKeysMapContains1And2_wordsAreColoredWith1And2() {
-    Field field = new EnglishField(keysParser, COLUMN_INDEX, "hello world");
+  public void colorWords_isImmutable_wordsAreNotColored() {
+    field.setImmutable(true);
 
+    field.colorWords(COLOR_KEYS);
+
+    assertThat(field.getWords().get(0).getColorKey()).isEqualTo(0);
+    assertThat(field.getWords().get(1).getColorKey()).isEqualTo(0);
+  }
+
+  @Test
+  public void colorWords_colorKeysMapContains1And2_wordsAreColoredWith1And2() {
     field.colorWords(COLOR_KEYS);
 
     assertThat(field.getWords().get(0).getColorKey()).isEqualTo(1);
@@ -49,7 +62,6 @@ public class FieldTest {
 
   @Test
   public void getColorKeysMap_keysParserReturnsAList_returnsSameList() {
-    Field field = new EnglishField(keysParser, COLUMN_INDEX, "word1, word2");
     when(keysParser.parseKeys(any())).thenReturn(COLOR_KEYS);
 
     assertThat(field.getColorKeysMap()).isEqualTo(COLOR_KEYS);
