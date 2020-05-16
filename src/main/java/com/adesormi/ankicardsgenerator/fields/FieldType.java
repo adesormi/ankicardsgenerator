@@ -1,26 +1,26 @@
 package com.adesormi.ankicardsgenerator.fields;
 
-import com.adesormi.ankicardsgenerator.fieldsparsers.FieldParser;
-import com.adesormi.ankicardsgenerator.fieldsparsers.LatinFieldParser;
-import com.adesormi.ankicardsgenerator.fieldsparsers.LogographicFieldParser;
+import com.adesormi.ankicardsgenerator.wordsparsers.WordsParser;
+import com.adesormi.ankicardsgenerator.wordsparsers.LatinWordsParser;
+import com.adesormi.ankicardsgenerator.wordsparsers.LogographicWordsParser;
 import com.adesormi.ankicardsgenerator.keysparsers.IntegerKeysWordsKeysParser;
 import com.adesormi.ankicardsgenerator.keysparsers.KeysParser;
 import com.adesormi.ankicardsgenerator.keysparsers.NoKeysWordsKeysParser;
 
 public enum FieldType {
 
-  CHINESE(new LogographicFieldParser(), new NoKeysWordsKeysParser()),
-  CHINESE_PINYIN(new LatinFieldParser(), new IntegerKeysWordsKeysParser()),
-  ENGLISH(new LatinFieldParser(), new NoKeysWordsKeysParser()),
-  FRENCH(new LatinFieldParser(), new NoKeysWordsKeysParser()),
-  VIETNAMESE(new LatinFieldParser(), new NoKeysWordsKeysParser()),
-  VIETNAMESE_VNI(new LatinFieldParser(), new NoKeysWordsKeysParser());
+  CHINESE(new LogographicWordsParser(), new NoKeysWordsKeysParser()),
+  CHINESE_PINYIN(new LatinWordsParser(), new IntegerKeysWordsKeysParser()),
+  ENGLISH(new LatinWordsParser(), new NoKeysWordsKeysParser()),
+  FRENCH(new LatinWordsParser(), new NoKeysWordsKeysParser()),
+  VIETNAMESE(new LatinWordsParser(), new NoKeysWordsKeysParser()),
+  VIETNAMESE_VNI(new LatinWordsParser(), new NoKeysWordsKeysParser());
 
-  private final FieldParser fieldParser;
+  private final WordsParser wordsParser;
   private final KeysParser keysParser;
 
-  FieldType(FieldParser fieldParser, KeysParser keysParser) {
-    this.fieldParser = fieldParser;
+  FieldType(WordsParser wordsParser, KeysParser keysParser) {
+    this.wordsParser = wordsParser;
     this.keysParser = keysParser;
   }
 
@@ -33,8 +33,8 @@ public enum FieldType {
     }
   }
 
-  public FieldParser getFieldParser() {
-    return fieldParser;
+  public WordsParser getWordsParser() {
+    return wordsParser;
   }
 
   public KeysParser getKeysParser() {

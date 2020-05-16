@@ -1,11 +1,15 @@
-package com.adesormi.ankicardsgenerator;
+package com.adesormi.ankicardsgenerator.fields;
+
+import com.adesormi.ankicardsgenerator.format.Color;
+import com.adesormi.ankicardsgenerator.format.Form;
 
 import java.util.Objects;
 
 public class Word {
 
   private final String value;
-  private int key;
+  private Color color = Color.NONE;
+  private Form form = Form.NONE;
 
   public Word(String value) {
     this.value = value;
@@ -13,9 +17,21 @@ public class Word {
 
   public String getValue() { return value; }
 
-  public int getKey() { return key; }
+  public Color getColor() {
+    return color;
+  }
 
-  public void setKey(int key) { this.key = key; }
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  public Form getForm() {
+    return form;
+  }
+
+  public void setForm(Form form) {
+    this.form = form;
+  }
 
   @Override
   public boolean equals(Object o) {

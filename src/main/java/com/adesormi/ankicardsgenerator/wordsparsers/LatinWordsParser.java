@@ -1,13 +1,17 @@
-package com.adesormi.ankicardsgenerator.fieldsparsers;
+package com.adesormi.ankicardsgenerator.wordsparsers;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 
 import static com.adesormi.ankicardsgenerator.Constants.SPACE;
 
-public class LatinFieldParser implements FieldParser {
+public class LatinWordsParser implements WordsParser {
 
-  public ImmutableList<String> parseFieldValue(String value) {
+  @Override
+  public ImmutableList<String> splitValueIntoWordsStr(String value) {
     return ImmutableList.copyOf(Splitter.on(SPACE).omitEmptyStrings().trimResults().split(value));
   }
+
+  @Override
+  public String separator() { return SPACE; }
 }

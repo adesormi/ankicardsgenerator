@@ -1,7 +1,7 @@
 package com.adesormi.ankicardsgenerator.io;
 
-import com.adesormi.ankicardsgenerator.Card;
-import com.adesormi.ankicardsgenerator.CardFactory;
+import com.adesormi.ankicardsgenerator.cards.Card;
+import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;
@@ -16,7 +16,7 @@ public class CardReader {
     this.cardFactory = cardFactory;
   }
 
-  public Card readLine(String line) {
+  Card readLine(String line) {
     ImmutableList<String> fields = getFieldsAsStringsFromLine(line);
     return cardFactory.createCard(fields);
   }

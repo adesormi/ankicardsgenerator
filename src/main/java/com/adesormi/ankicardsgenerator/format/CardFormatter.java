@@ -1,28 +1,54 @@
 package com.adesormi.ankicardsgenerator.format;
 
+import com.adesormi.ankicardsgenerator.cards.Card;
+import com.adesormi.ankicardsgenerator.fields.Field;
+import com.adesormi.ankicardsgenerator.fields.Word;
 import com.google.common.collect.ImmutableList;
+
+import java.util.Objects;
 
 public class CardFormatter {
 
-  private int numberOfKeys;
   private ImmutableList<Color> colors;
   private ImmutableList<Form> forms;
 
-  public CardFormatter(int numberOfKeys, ImmutableList<Color> colors, ImmutableList<Form> forms) {
-    this.numberOfKeys = numberOfKeys;
+  public CardFormatter(ImmutableList<Color> colors, ImmutableList<Form> forms) {
     this.colors = colors;
     this.forms = forms;
   }
 
-  public int getNumberOfKeys() {
-    return numberOfKeys;
+  public void formatCard(Card card) {
+    card.getFields().forEach(field -> formatField(field, card.getMasterField().getKeys()));
   }
 
-  public ImmutableList<Color> getColors() {
-    return colors;
+  private void formatField(Field field, ImmutableList<Integer> keys) {
+    if (field.isImmutable()) return;
+    ImmutableList<Word> words = field.getWords();
+    for (int i = 0; i < keys.size(); ++i) {
+      formatWord(words.get(i), keys.get(i));
+    }
   }
 
-  public ImmutableList<Form> getForms() {
-    return forms;
+  private void formatWord(Word word, Integer key) {
+    word.setColor(colors.get(key));
+    word.setForm(forms.get(key));
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CardFormatter)) return false;
+    CardFormatter that = (CardFormatter) o;
+    if (colors.size() != that.colors.size() || forms.size() != that.forms.size()) return false;
+    for (int i = 0; i < colors.size(); ++i) {
+      if (colors.get(i) != that.colors.get(i)) return false;
+      if (forms.get(i) != that.forms.get(i)) return false;
+    }
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(colors, forms);
   }
 }

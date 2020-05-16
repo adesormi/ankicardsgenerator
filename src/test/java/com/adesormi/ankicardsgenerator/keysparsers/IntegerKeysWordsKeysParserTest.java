@@ -1,6 +1,6 @@
 package com.adesormi.ankicardsgenerator.keysparsers;
 
-import com.adesormi.ankicardsgenerator.Word;
+import com.adesormi.ankicardsgenerator.fields.Word;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;

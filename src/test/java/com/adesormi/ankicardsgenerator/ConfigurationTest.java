@@ -1,7 +1,9 @@
 package com.adesormi.ankicardsgenerator;
 
 import com.adesormi.ankicardsgenerator.Configuration.*;
+import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.fields.FieldType.*;
+import com.adesormi.ankicardsgenerator.format.CardFormatter;
 import com.adesormi.ankicardsgenerator.format.Color;
 import com.adesormi.ankicardsgenerator.format.Color.InvalidColorException;
 import com.adesormi.ankicardsgenerator.format.Form;
@@ -12,10 +14,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
-import static com.adesormi.ankicardsgenerator.format.Color.GREEN;
-import static com.adesormi.ankicardsgenerator.format.Color.RED;
-import static com.adesormi.ankicardsgenerator.format.Form.CIRCLE;
-import static com.adesormi.ankicardsgenerator.format.Form.RECTANGLE;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(JUnit4.class)
@@ -25,6 +23,14 @@ public class ConfigurationTest {
       new CardFactory(3, ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
   private static final CardFactory VIETNAMESE_CARD_FACTORY =
       new CardFactory(2, ImmutableList.of(ENGLISH, VIETNAMESE_VNI, VIETNAMESE));
+
+  private static final CardFormatter ONE_KEY_NO_COLOR_NO_FORM_CARD_FORMATTER =
+      new CardFormatter(ImmutableList.of(Color.NONE), ImmutableList.of(Form.NONE));
+  private static final CardFormatter TWO_KEYS_NONE_RED_COLORS_CIRCLE_NONE_FORMS_CARD_FORMATTER =
+      new CardFormatter(
+          ImmutableList.of(Color.NONE, Color.RED),
+          ImmutableList.of(Form.CIRCLE, Form.NONE)
+      );
 
   private Configuration configuration;
 
@@ -91,41 +97,19 @@ public class ConfigurationTest {
   public void constructor_propertiesWith1KeyNoColorsAndNoForms_success() {
     configuration = new Configuration("test/resources/1KeyNoColorsNoForms.properties");
 
-    assertThat(configuration.getCardFormatter().getColors()).isEqualTo(ImmutableList.of(Color.NONE));
-    assertThat(configuration.getCardFormatter().getForms()).isEqualTo(ImmutableList.of(Form.NONE));
+    assertThat(configuration.getCardFormatter()).isEqualTo(ONE_KEY_NO_COLOR_NO_FORM_CARD_FORMATTER);
   }
 
   @Test
-  public void constructor_propertiesWith1KeyNoColors_success() {
-    configuration = new Configuration("test/resources/1KeyNoColors.properties");
+  public void constructor_propertiesWith1KeyEmptyColorsEmptyForms_success() {
+    configuration = new Configuration("test/resources/1KeyEmptyColorsEmptyForms.properties");
 
-    assertThat(configuration.getCardFormatter().getColors()).isEqualTo(ImmutableList.of(Color.NONE));
-  }
-
-  @Test
-  public void constructor_propertiesWithEmptyColors_success() {
-    configuration = new Configuration("test/resources/1KeyEmptyColors.properties");
-
-    assertThat(configuration.getCardFormatter().getColors()).isEqualTo(ImmutableList.of(Color.NONE));
+    assertThat(configuration.getCardFormatter()).isEqualTo(ONE_KEY_NO_COLOR_NO_FORM_CARD_FORMATTER);
   }
 
   @Test(expected = InvalidColorException.class)
   public void constructor_propertiesWithInvalidColor_throwInvalidColorException() {
     configuration = new Configuration("test/resources/invalidColor.properties");
-  }
-
-  @Test
-  public void constructor_propertiesWith1KeyNoForms_success() {
-    configuration = new Configuration("test/resources/1KeyNoForms.properties");
-
-    assertThat(configuration.getCardFormatter().getForms()).isEqualTo(ImmutableList.of(Form.NONE));
-  }
-
-  @Test
-  public void constructor_propertiesWith1KeyEmptyForms_success() {
-    configuration = new Configuration("test/resources/1KeyEmptyForms.properties");
-
-    assertThat(configuration.getCardFormatter().getForms()).isEqualTo(ImmutableList.of(Form.NONE));
   }
 
   @Test(expected = InvalidFormException.class)
@@ -134,34 +118,11 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void constructor_propertiesWith5KeysRedNoneGreenColors_success() {
-    configuration = new Configuration("test/resources/5KeysRedNoneGreenColors.properties");
+  public void constructor_propertiesWith2KeysNoneRedColorsCircleNoneForms_success() {
+    configuration =
+        new Configuration("test/resources/2KeysNoneRedColorsCircleNoneForms.properties");
 
-    assertThat(configuration.getCardFormatter().getColors()).isEqualTo(
-        ImmutableList.of(RED, Color.NONE, GREEN, Color.NONE, Color.NONE));
-  }
-
-  @Test
-  public void constructor_propertiesWith4KeysNoneCircleRectangleForms_success() {
-    configuration = new Configuration("test/resources/4KeysNoneCircleRectangleForms.properties");
-
-    assertThat(configuration.getCardFormatter().getForms()).isEqualTo(
-        ImmutableList.of(Form.NONE, CIRCLE, RECTANGLE, Form.NONE));
-  }
-
-  @Test
-  public void constructor_propertiesWith2KeysRedNoneGreenColors_success() {
-    configuration = new Configuration("test/resources/2KeysRedNoneGreenColors.properties");
-
-    assertThat(configuration.getCardFormatter().getColors()).isEqualTo(
-        ImmutableList.of(RED, Color.NONE));
-  }
-
-  @Test
-  public void constructor_propertiesWith2KeysNoneCircleRectangleForms_success() {
-    configuration = new Configuration("test/resources/2KeysNoneCircleRectangleForms.properties");
-
-    assertThat(configuration.getCardFormatter().getForms()).isEqualTo(
-        ImmutableList.of(Form.NONE, CIRCLE));
+    assertThat(configuration.getCardFormatter())
+        .isEqualTo(TWO_KEYS_NONE_RED_COLORS_CIRCLE_NONE_FORMS_CARD_FORMATTER);
   }
 }

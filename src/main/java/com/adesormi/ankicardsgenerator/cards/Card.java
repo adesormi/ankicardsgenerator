@@ -1,4 +1,4 @@
-package com.adesormi.ankicardsgenerator;
+package com.adesormi.ankicardsgenerator.cards;
 
 import com.adesormi.ankicardsgenerator.fields.Field;
 import com.google.common.collect.ImmutableList;
@@ -8,15 +8,12 @@ public class Card {
   private final int masterFieldIndex;
   private final ImmutableList<Field> fields;
 
-  public Card(int masterFieldIndex, ImmutableList<Field> fields) {
+  Card(int masterFieldIndex, ImmutableList<Field> fields) {
     this.masterFieldIndex = masterFieldIndex;
     this.fields = fields;
   }
 
-  public void color() {
-    ImmutableList<Integer> colorKeys = fields.get(masterFieldIndex).getColorKeysMap();
-    fields.forEach(f -> f.colorWords(colorKeys));
-  }
+  public Field getMasterField() { return fields.get(masterFieldIndex); }
 
   public ImmutableList<Field> getFields() {
     return fields;

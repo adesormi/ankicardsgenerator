@@ -1,7 +1,7 @@
 package com.adesormi.ankicardsgenerator.io;
 
-import com.adesormi.ankicardsgenerator.Card;
-import com.adesormi.ankicardsgenerator.fields.Field;
+import com.adesormi.ankicardsgenerator.cards.Card;
+import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.io.FileReader.InvalidInputFileException;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
@@ -14,33 +14,20 @@ import static org.mockito.Mockito.when;
 
 public class FileReaderTest {
 
+  private static final CardFactory CHINESE_CARD_FACTORY =
+      new CardFactory(3, ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
+  private static final CardFactory VIETNAMESE_CARD_FACTORY =
+      new CardFactory(3, ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
+
   private static final String CHINESE_LINE1 = "hello, 你好, ni3 hao3";
-  private static final Card CHINESE_CARD1 = new Card(
-      3,
-      ImmutableList.of(
-          new Field(ENGLISH, "hello"),
-          new Field(CHINESE, "你好"),
-          new Field(CHINESE_PINYIN, "ni3 hao3")
-      )
-  );
+  private static final Card CHINESE_CARD1 =
+      CHINESE_CARD_FACTORY.createCard(ImmutableList.of("hello", "你好", "ni3 hao3"));
   private static final String CHINESE_LINE2 = "bye, 再见, zai4 jian4";
-  private static final Card CHINESE_CARD2 = new Card(
-      3,
-      ImmutableList.of(
-          new Field(ENGLISH, "bye"),
-          new Field(CHINESE, "再见"),
-          new Field(CHINESE_PINYIN, "zai4 jian4")
-      )
-  );
+  private static final Card CHINESE_CARD2 =
+      CHINESE_CARD_FACTORY.createCard(ImmutableList.of("bye", "再见", "zai4 jian4"));
   private static final String VIETNAMESE_LINE1 = "I do, tôi làm, toi6 lam2";
-  private static final Card VIETNAMESE_CARD1 = new Card(
-      3,
-      ImmutableList.of(
-          new Field(ENGLISH, "I do"),
-          new Field(VIETNAMESE, "tôi làm"),
-          new Field(VIETNAMESE_VNI, "toi6 làm")
-      )
-  );
+  private static final Card VIETNAMESE_CARD1 =
+      VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 làm"));
 
   @Mock private CardReader cardReader;
 

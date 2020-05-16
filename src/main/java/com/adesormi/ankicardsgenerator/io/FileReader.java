@@ -1,6 +1,6 @@
 package com.adesormi.ankicardsgenerator.io;
 
-import com.adesormi.ankicardsgenerator.Card;
+import com.adesormi.ankicardsgenerator.cards.Card;
 import com.google.common.collect.ImmutableList;
 
 import java.io.IOException;

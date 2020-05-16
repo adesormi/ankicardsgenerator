@@ -1,5 +1,6 @@
 package com.adesormi.ankicardsgenerator;
 
+import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.fields.FieldType;
 import com.adesormi.ankicardsgenerator.format.CardFormatter;
 import com.adesormi.ankicardsgenerator.format.Color;
@@ -39,9 +40,7 @@ public class Configuration {
     return cardFactory;
   }
 
-  public CardFormatter getCardFormatter() {
-    return cardFormatter;
-  }
+  public CardFormatter getCardFormatter() { return cardFormatter; }
 
   private void loadProperties(String propertiesFileName) {
     Path propertiesFilePath = Paths.get(ROOT_PATH, propertiesFileName);
@@ -55,7 +54,7 @@ public class Configuration {
 
   private void setupConfiguration() {
     setupCardFactory();
-    setupCardFormat();
+    setupCardFormatter();
   }
 
   private void setupCardFactory() {
@@ -100,11 +99,11 @@ public class Configuration {
     }
   }
 
-  private void setupCardFormat() {
+  private void setupCardFormatter() {
     numberOfKeys = getNumberOfKeysFromProperties();
     ImmutableList<Color> colors = getColorsFromProperties();
     ImmutableList<Form> forms = getFormsFromProperties();
-    cardFormatter = new CardFormatter(numberOfKeys, colors, forms);
+    cardFormatter = new CardFormatter(colors, forms);
   }
 
   private int getNumberOfKeysFromProperties() {

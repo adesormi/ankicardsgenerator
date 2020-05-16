@@ -1,7 +1,7 @@
 package com.adesormi.ankicardsgenerator.io;
 
-import com.adesormi.ankicardsgenerator.Card;
-import com.adesormi.ankicardsgenerator.CardFactory;
+import com.adesormi.ankicardsgenerator.cards.Card;
+import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.fields.Field;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
@@ -19,28 +19,21 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class CardReaderTest {
 
+  private static final CardFactory CHINESE_CARD_FACTORY =
+      new CardFactory(3, ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
+  private static final CardFactory VIETNAMESE_CARD_FACTORY =
+      new CardFactory(3, ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
+
   private static final String CHINESE_LINE = "hello, 你好, ni3 hao3";
   private static final ImmutableList<String> CHINESE_FIELDS =
       ImmutableList.of("hello", "你好", "ni3 hao3");
-  private static final Card CHINESE_CARD = new Card(
-      3,
-      ImmutableList.of(
-          new Field(ENGLISH, "hello"),
-          new Field(CHINESE, "你好"),
-          new Field(CHINESE_PINYIN, "ni3 hao3")
-      )
-  );
+  private static final Card CHINESE_CARD =
+      CHINESE_CARD_FACTORY.createCard(ImmutableList.of("hello", "你好", "ni3 hao3"));
   private static final String VIETNAMESE_LINE = "I do, tôi làm, toi6 lam2";
   private static final ImmutableList<String> VIETNAMESE_FIELDS =
       ImmutableList.of("I do", "tôi làm", "toi6 lam2");
-  private static final Card VIETNAMSE_CARD = new Card(
-      3,
-      ImmutableList.of(
-          new Field(ENGLISH, "I do"),
-          new Field(VIETNAMESE, "tôi làm"),
-          new Field(VIETNAMESE_VNI, "toi6 lam2")
-      )
-  );
+  private static final Card VIETNAMESE_CARD =
+      VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 làm"));
 
   @Mock CardFactory cardFactory;
 
@@ -78,8 +71,8 @@ public class CardReaderTest {
   public void readLine_vietnameseLine_vietnameseCard() {
     cardReader = new CardReader(cardFactory);
 
-    when(cardFactory.createCard(VIETNAMESE_FIELDS)).thenReturn(VIETNAMSE_CARD);
+    when(cardFactory.createCard(VIETNAMESE_FIELDS)).thenReturn(VIETNAMESE_CARD);
 
-    assertThat(cardReader.readLine(VIETNAMESE_LINE)).isEqualTo(VIETNAMSE_CARD);
+    assertThat(cardReader.readLine(VIETNAMESE_LINE)).isEqualTo(VIETNAMESE_CARD);
   }
 }
