@@ -5,6 +5,7 @@ import com.adesormi.ankicardsgenerator.format.CardFormatter;
 import com.adesormi.ankicardsgenerator.io.CardReader;
 import com.adesormi.ankicardsgenerator.io.CardWriter;
 import com.adesormi.ankicardsgenerator.io.FileReader;
+import com.adesormi.ankicardsgenerator.io.FileWriter;
 import com.google.common.collect.ImmutableList;
 
 public class Main {
@@ -17,6 +18,7 @@ public class Main {
     CardFormatter cardFormatter = configuration.getCardFormatter();
     cards.forEach(cardFormatter::formatCard);
     CardWriter cardWriter = new CardWriter();
-    cards.forEach(cardWriter::writeCard);
+    FileWriter fileWriter = new FileWriter(cardWriter);
+    fileWriter.writeCardsToFile("file", cards);
   }
 }
