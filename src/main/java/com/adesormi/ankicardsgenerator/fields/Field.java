@@ -4,15 +4,15 @@ import com.adesormi.ankicardsgenerator.Word;
 import com.adesormi.ankicardsgenerator.keysparsers.KeysParser;
 import com.google.common.collect.ImmutableList;
 
-public abstract class Field {
+public class Field {
 
-  protected ImmutableList<Word> words;
-  private KeysParser keysParser;
+  protected final ImmutableList<Word> words;
+  private final FieldType fieldType;
   private boolean isImmutable;
 
-  protected Field(KeysParser keysParser, String value) {
+  public Field(FieldType fieldType, String value) {
     validateValue(value);
-    this.keysParser = keysParser;
+    this.fieldType = fieldType;
     this.words = getWordsFromValue(value);
   }
 
@@ -23,10 +23,12 @@ public abstract class Field {
     }
   }
 
-  public abstract ImmutableList<String> parseValueIntoWords(String value);
+  public ImmutableList<String> parseValueIntoWords(String value) {
+    return fieldType.getFieldParser().parseFieldValue(value);
+  }
 
   public ImmutableList<Integer> getColorKeysMap() {
-    return keysParser.parseKeys(words);
+    return fieldType.getKeysParser().parseKeys(words);
   }
 
   public ImmutableList<Word> getWords() { return words; }

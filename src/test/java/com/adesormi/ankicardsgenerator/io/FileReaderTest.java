@@ -1,9 +1,7 @@
 package com.adesormi.ankicardsgenerator.io;
 
 import com.adesormi.ankicardsgenerator.Card;
-import com.adesormi.ankicardsgenerator.fields.ChineseHanziField;
-import com.adesormi.ankicardsgenerator.fields.ChinesePinyinField;
-import com.adesormi.ankicardsgenerator.fields.EnglishField;
+import com.adesormi.ankicardsgenerator.fields.Field;
 import com.adesormi.ankicardsgenerator.io.FileReader.InvalidInputFileException;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
@@ -11,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
 import static org.mockito.Mockito.when;
 
 public class FileReaderTest {
@@ -19,27 +18,27 @@ public class FileReaderTest {
   private static final Card CHINESE_CARD1 = new Card(
       3,
       ImmutableList.of(
-        new EnglishField("hello"),
-        new ChineseHanziField("你好"),
-        new ChinesePinyinField("ni3 hao3")
+          new Field(ENGLISH, "hello"),
+          new Field(CHINESE, "你好"),
+          new Field(CHINESE_PINYIN, "ni3 hao3")
       )
   );
   private static final String CHINESE_LINE2 = "bye, 再见, zai4 jian4";
   private static final Card CHINESE_CARD2 = new Card(
       3,
       ImmutableList.of(
-          new EnglishField("bye"),
-          new ChineseHanziField("再见"),
-          new ChinesePinyinField("zai4 jian4")
+          new Field(ENGLISH, "bye"),
+          new Field(CHINESE, "再见"),
+          new Field(CHINESE_PINYIN, "zai4 jian4")
       )
   );
   private static final String VIETNAMESE_LINE1 = "I do, tôi làm, toi6 lam2";
   private static final Card VIETNAMESE_CARD1 = new Card(
       3,
       ImmutableList.of(
-          new EnglishField("I do"),
-          new ChineseHanziField("tôi làm"),
-          new ChinesePinyinField("toi6 làm")
+          new Field(ENGLISH, "I do"),
+          new Field(VIETNAMESE, "tôi làm"),
+          new Field(VIETNAMESE_VNI, "toi6 làm")
       )
   );
 

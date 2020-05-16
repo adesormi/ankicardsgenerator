@@ -2,7 +2,7 @@ package com.adesormi.ankicardsgenerator.io;
 
 import com.adesormi.ankicardsgenerator.Card;
 import com.adesormi.ankicardsgenerator.CardFactory;
-import com.adesormi.ankicardsgenerator.fields.*;
+import com.adesormi.ankicardsgenerator.fields.Field;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +11,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
 import static com.adesormi.ankicardsgenerator.io.CardReader.InvalidCardInputException;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
@@ -24,9 +25,9 @@ public class CardReaderTest {
   private static final Card CHINESE_CARD = new Card(
       3,
       ImmutableList.of(
-          new EnglishField("hello"),
-          new ChineseHanziField("你好"),
-          new ChinesePinyinField("ni3 hao3")
+          new Field(ENGLISH, "hello"),
+          new Field(CHINESE, "你好"),
+          new Field(CHINESE_PINYIN, "ni3 hao3")
       )
   );
   private static final String VIETNAMESE_LINE = "I do, tôi làm, toi6 lam2";
@@ -35,9 +36,9 @@ public class CardReaderTest {
   private static final Card VIETNAMSE_CARD = new Card(
       3,
       ImmutableList.of(
-          new EnglishField("I do"),
-          new VietnameseField("tôi làm"),
-          new VietnameseVniField("toi6 lam2")
+          new Field(ENGLISH, "I do"),
+          new Field(VIETNAMESE, "tôi làm"),
+          new Field(VIETNAMESE_VNI, "toi6 lam2")
       )
   );
 

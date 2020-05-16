@@ -1,19 +1,14 @@
 package com.adesormi.ankicardsgenerator.fields;
 
 import com.adesormi.ankicardsgenerator.fields.Field.InvalidValueException;
-import com.adesormi.ankicardsgenerator.keysparsers.KeysParser;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
+import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class FieldTest {
@@ -25,17 +20,17 @@ public class FieldTest {
 
   @Before
   public void setUp() {
-    field = new ChinesePinyinField(VALUE);
+    field = new Field(CHINESE, VALUE);
   }
 
   @Test(expected = InvalidValueException.class)
   public void constructor_nullValue_throwInvalidValueException() {
-    new ChineseHanziField(null);
+    new Field(ENGLISH, null);
   }
 
   @Test(expected = InvalidValueException.class)
   public void parseValueIntoWords_emptyValue_throwInvalidValueException() {
-    new ChineseHanziField("");
+    new Field(FRENCH, "");
   }
 
   @Test
