@@ -14,18 +14,13 @@ import static com.google.common.truth.Truth.assertThat;
 @RunWith(JUnit4.class)
 public class ChineseHanziFieldTest {
 
-  private static final int COLUMN_INDEX = 0;
   private static final String VALUE = "你好";
-
-  @Mock KeysParser keysParser;
 
   private ChineseHanziField field;
 
   @Before
   public void setUp() {
-    MockitoAnnotations.initMocks(this);
-
-    field = new ChineseHanziField(keysParser, COLUMN_INDEX, VALUE);
+    field = new ChineseHanziField(VALUE);
   }
 
   @Test

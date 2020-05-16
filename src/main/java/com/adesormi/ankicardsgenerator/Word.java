@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Word {
 
   private final String value;
-  private int colorKey;
+  private int key;
 
   public Word(String value) {
     this.value = value;
@@ -13,9 +13,9 @@ public class Word {
 
   public String getValue() { return value; }
 
-  public int getColorKey() { return colorKey; }
+  public int getKey() { return key; }
 
-  public void setColorKey(int colorKey) { this.colorKey = colorKey; }
+  public void setKey(int key) { this.key = key; }
 
   @Override
   public boolean equals(Object o) {

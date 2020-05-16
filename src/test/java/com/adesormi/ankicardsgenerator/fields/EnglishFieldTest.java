@@ -14,18 +14,13 @@ import static com.google.common.truth.Truth.assertThat;
 @RunWith(JUnit4.class)
 public class EnglishFieldTest {
 
-  private static final int COLUMN_INDEX = 0;
   private static final String VALUE = "hello";
-
-  @Mock KeysParser keysParser;
 
   private EnglishField field;
 
   @Before
   public void setUp() {
-    MockitoAnnotations.initMocks(this);
-
-    field = new EnglishField(keysParser, COLUMN_INDEX, VALUE);
+    field = new EnglishField(VALUE);
   }
 
   @Test

@@ -1,12 +1,12 @@
 package com.adesormi.ankicardsgenerator.fields;
 
-import com.adesormi.ankicardsgenerator.keysparsers.NoKeysWordsKeysParser;
+import com.adesormi.ankicardsgenerator.keysparsers.IntegerKeysWordsKeysParser;
 import com.google.common.collect.ImmutableList;
 
-public class FrenchField extends Field {
+public class VietnameseVniField extends Field {
 
-  public FrenchField(String value) {
-    super(new NoKeysWordsKeysParser(), value);
+  public VietnameseVniField(String value) {
+    super(new IntegerKeysWordsKeysParser(), value);
   }
 
   @Override

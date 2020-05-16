@@ -8,20 +8,18 @@ public abstract class Field {
 
   protected ImmutableList<Word> words;
   private KeysParser keysParser;
-  private int columnIndex;
   private boolean isImmutable;
 
-  protected Field(KeysParser keysParser, int columnIndex, String value) {
+  protected Field(KeysParser keysParser, String value) {
     validateValue(value);
     this.keysParser = keysParser;
-    this.columnIndex = columnIndex;
     this.words = getWordsFromValue(value);
   }
 
   public void colorWords(ImmutableList<Integer> colorKeys) {
     if (isImmutable) return;
     for (int i = 0; i < colorKeys.size(); ++i) {
-      words.get(i).setColorKey(colorKeys.get(i));
+      words.get(i).setKey(colorKeys.get(i));
     }
   }
 
@@ -33,7 +31,13 @@ public abstract class Field {
 
   public ImmutableList<Word> getWords() { return words; }
 
-  public void setImmutable(boolean immutable) { isImmutable = immutable; }
+  public boolean isImmutable() {
+    return isImmutable;
+  }
+
+  public void setImmutable(boolean immutable) {
+    isImmutable = immutable;
+  }
 
   private void validateValue(String value) {
     if (value == null || value.isEmpty()) throw new InvalidValueException();
