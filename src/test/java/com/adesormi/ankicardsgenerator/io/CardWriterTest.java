@@ -2,7 +2,6 @@ package com.adesormi.ankicardsgenerator.io;
 
 import com.adesormi.ankicardsgenerator.cards.Card;
 import com.adesormi.ankicardsgenerator.cards.CardFactory;
-import com.adesormi.ankicardsgenerator.fields.Field;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class CardReaderTest {
+public class CardWriterTest {
 
   private static final CardFactory CHINESE_CARD_FACTORY =
       new CardFactory(3, ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
@@ -25,54 +24,25 @@ public class CardReaderTest {
       new CardFactory(3, ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
 
   private static final String CHINESE_LINE = "hello, 你好, ni3 hao3";
-  private static final ImmutableList<String> CHINESE_FIELDS =
-      ImmutableList.of("hello", "你好", "ni3 hao3");
   private static final Card CHINESE_CARD =
       CHINESE_CARD_FACTORY.createCard(ImmutableList.of("hello", "你好", "ni3 hao3"));
   private static final String VIETNAMESE_LINE = "I do, tôi làm, toi6 lam2";
-  private static final ImmutableList<String> VIETNAMESE_FIELDS =
-      ImmutableList.of("I do", "tôi làm", "toi6 lam2");
   private static final Card VIETNAMESE_CARD =
       VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 lam2"));
 
-  @Mock CardFactory cardFactory;
+  private CardWriter cardWriter;
 
-  private CardReader cardReader;
+  @Test
+  public void writeCard_chineseCard_chineseLine() {
+    cardWriter = new CardWriter();
 
-  @Before
-  public void setUp() {
-    MockitoAnnotations.initMocks(this);
-  }
-
-  @Test(expected = InvalidCardInputException.class)
-  public void readLine_nullLine_throwInvalidCardInputException() {
-    cardReader = new CardReader(cardFactory);
-
-    cardReader.readLine(null);
-  }
-
-  @Test(expected = InvalidCardInputException.class)
-  public void readLine_emptyLine_throwInvalidCardInputException() {
-    cardReader = new CardReader(cardFactory);
-
-    cardReader.readLine("");
+    assertThat(cardWriter.writeCard(CHINESE_CARD)).isEqualTo(CHINESE_LINE);
   }
 
   @Test
-  public void readLine_chineseLine_chineseCard() {
-    cardReader = new CardReader(cardFactory);
+  public void writeCard_vietnameseCard_vietnameseLine() {
+    cardWriter = new CardWriter();
 
-    when(cardFactory.createCard(CHINESE_FIELDS)).thenReturn(CHINESE_CARD);
-
-    assertThat(cardReader.readLine(CHINESE_LINE)).isEqualTo(CHINESE_CARD);
-  }
-
-  @Test
-  public void readLine_vietnameseLine_vietnameseCard() {
-    cardReader = new CardReader(cardFactory);
-
-    when(cardFactory.createCard(VIETNAMESE_FIELDS)).thenReturn(VIETNAMESE_CARD);
-
-    assertThat(cardReader.readLine(VIETNAMESE_LINE)).isEqualTo(VIETNAMESE_CARD);
+    assertThat(cardWriter.writeCard(VIETNAMESE_CARD)).isEqualTo(VIETNAMESE_LINE);
   }
 }

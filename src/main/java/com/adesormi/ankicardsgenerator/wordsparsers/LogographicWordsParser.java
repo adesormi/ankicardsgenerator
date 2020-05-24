@@ -13,7 +13,7 @@ public class LogographicWordsParser implements WordsParser {
     return builder.build();
   }
 
-  public String separator() {
+  public String wordsSeparator() {
     return "";
   }
 }

@@ -7,9 +7,7 @@ import java.util.Objects;
 
 public class Word {
 
-  private final String value;
-  private Color color = Color.NONE;
-  private Form form = Form.NONE;
+  private String value;
 
   public Word(String value) {
     this.value = value;
@@ -17,20 +15,12 @@ public class Word {
 
   public String getValue() { return value; }
 
-  public Color getColor() {
-    return color;
-  }
-
   public void setColor(Color color) {
-    this.color = color;
-  }
-
-  public Form getForm() {
-    return form;
+    value = color.openingTag() + value + color.closingTag();
   }
 
   public void setForm(Form form) {
-    this.form = form;
+    value = form.openingTag() + value + form.closingTag();
   }
 
   @Override
@@ -39,10 +29,5 @@ public class Word {
     if (!(o instanceof Word)) return false;
     Word word = (Word) o;
     return Objects.equals(value, word.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
   }
 }

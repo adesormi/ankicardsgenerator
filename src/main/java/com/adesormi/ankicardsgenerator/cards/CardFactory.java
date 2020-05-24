@@ -38,10 +38,5 @@ public class CardFactory {
         Objects.equals(fieldTypes, that.fieldTypes);
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(masterFieldIndex, fieldTypes);
-  }
-
   public static class InvalidNumberOfFieldsException extends RuntimeException {}
 }

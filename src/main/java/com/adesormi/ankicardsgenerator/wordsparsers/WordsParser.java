@@ -14,5 +14,5 @@ public interface WordsParser {
 
   ImmutableList<String> splitValueIntoWordsStr(String value);
 
-  String separator();
+  String wordsSeparator();
 }

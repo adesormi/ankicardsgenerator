@@ -14,7 +14,7 @@ public enum FieldType {
   ENGLISH(new LatinWordsParser(), new NoKeysWordsKeysParser()),
   FRENCH(new LatinWordsParser(), new NoKeysWordsKeysParser()),
   VIETNAMESE(new LatinWordsParser(), new NoKeysWordsKeysParser()),
-  VIETNAMESE_VNI(new LatinWordsParser(), new NoKeysWordsKeysParser());
+  VIETNAMESE_VNI(new LatinWordsParser(), new IntegerKeysWordsKeysParser());
 
   private final WordsParser wordsParser;
   private final KeysParser keysParser;

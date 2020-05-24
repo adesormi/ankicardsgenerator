@@ -13,5 +13,5 @@ public class LatinWordsParser implements WordsParser {
   }
 
   @Override
-  public String separator() { return SPACE; }
+  public String wordsSeparator() { return SPACE; }
 }

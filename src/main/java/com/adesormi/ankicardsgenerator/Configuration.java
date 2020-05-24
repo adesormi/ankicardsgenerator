@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Properties;
 
 import static com.adesormi.ankicardsgenerator.Constants.ROOT_PATH;
-import static com.adesormi.ankicardsgenerator.Constants.SEPARATOR;
+import static com.adesormi.ankicardsgenerator.Constants.COMMA_SEPARATOR;
 
 public class Configuration {
 
@@ -71,7 +71,7 @@ public class Configuration {
   private String[] loadFieldsAsStringsFromProperties() {
     String fieldsStr = properties.getProperty(FIELDS_PROPERTY);
     if (fieldsStr == null || fieldsStr.isEmpty()) throw new MissingFieldsException();
-    return fieldsStr.trim().split(SEPARATOR);
+    return fieldsStr.trim().split(COMMA_SEPARATOR);
   }
 
   private ImmutableList<FieldType> parseFieldTypes(String[] fieldsStr) {
@@ -82,7 +82,7 @@ public class Configuration {
 
   private int getMasterFieldIndexFromProperties() {
     String masterFieldIndexStr = loadMasterFieldIndexAsStringFromProperties();
-    return parseMasterFieldIndex(masterFieldIndexStr);
+    return parseMasterFieldIndex(masterFieldIndexStr) - 1; // -1 for 0 indexed list
   }
 
   private String loadMasterFieldIndexAsStringFromProperties() {
@@ -136,6 +136,7 @@ public class Configuration {
 
   private ImmutableList<Color> parseColors(String[] colorsStr) {
     ImmutableList.Builder<Color> builder = ImmutableList.builder();
+    builder.add(Color.NONE); // add NONE for 0 indexed list
     Arrays.stream(colorsStr).forEach(c -> builder.add(Color.getColorFromString(c)));
     return builder.build();
   }
@@ -148,6 +149,7 @@ public class Configuration {
 
   private ImmutableList<Form> parseForms(String[] formsStr) {
     ImmutableList.Builder<Form> builder = ImmutableList.builder();
+    builder.add(Form.NONE); // add NONE for 0 indexed list
     Arrays.stream(formsStr).forEach(f -> builder.add(Form.getFormFromString(f)));
     return builder.build();
   }
@@ -155,7 +157,7 @@ public class Configuration {
   private String[] loadArrayOfStringsFromProperties(String propertyName) {
     String propertiesStr = properties.getProperty(propertyName);
     if (propertiesStr == null) propertiesStr = "";
-    return propertiesStr.trim().split(SEPARATOR);
+    return propertiesStr.trim().split(COMMA_SEPARATOR);
   }
 
   public static class MissingConfigurationException extends RuntimeException {}

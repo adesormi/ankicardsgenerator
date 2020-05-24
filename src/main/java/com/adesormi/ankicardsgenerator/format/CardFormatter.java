@@ -5,12 +5,13 @@ import com.adesormi.ankicardsgenerator.fields.Field;
 import com.adesormi.ankicardsgenerator.fields.Word;
 import com.google.common.collect.ImmutableList;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class CardFormatter {
 
-  private ImmutableList<Color> colors;
-  private ImmutableList<Form> forms;
+  private final ImmutableList<Color> colors;
+  private final ImmutableList<Form> forms;
 
   public CardFormatter(ImmutableList<Color> colors, ImmutableList<Form> forms) {
     this.colors = colors;
@@ -30,8 +31,8 @@ public class CardFormatter {
   }
 
   private void formatWord(Word word, Integer key) {
-    word.setColor(colors.get(key));
     word.setForm(forms.get(key));
+    word.setColor(colors.get(key));
   }
 
   @Override
@@ -45,10 +46,5 @@ public class CardFormatter {
       if (forms.get(i) != that.forms.get(i)) return false;
     }
     return true;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(colors, forms);
   }
 }

@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;
 
-import static com.adesormi.ankicardsgenerator.Constants.SEPARATOR;
+import static com.adesormi.ankicardsgenerator.Constants.COMMA_SEPARATOR;
 
 public class CardReader {
 
@@ -23,7 +23,7 @@ public class CardReader {
 
   private ImmutableList<String> getFieldsAsStringsFromLine(String line) {
     if (line == null || line.isEmpty()) throw new InvalidCardInputException();
-    String[] fields = line.trim().split(SEPARATOR);
+    String[] fields = line.trim().split(COMMA_SEPARATOR);
     ImmutableList.Builder<String> builder = ImmutableList.builder();
     Arrays.stream(fields).forEach(f -> builder.add(f.trim()));
     return builder.build();

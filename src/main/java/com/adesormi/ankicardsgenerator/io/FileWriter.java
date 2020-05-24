@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
+import static com.adesormi.ankicardsgenerator.Constants.POINT_SEPARATOR;
 import static com.adesormi.ankicardsgenerator.Constants.ROOT_PATH;
-import static com.adesormi.ankicardsgenerator.Constants.SEPARATOR;
 
 public class FileWriter {
 
@@ -34,7 +35,7 @@ public class FileWriter {
 
   private Path getFilePath(String fileName) {
     if (fileName == null || fileName.isEmpty()) throw new InvalidOutputFileException();
-    String[] fileNameParts = fileName.split(SEPARATOR);
+    String[] fileNameParts = fileName.split("\\" + POINT_SEPARATOR);
     if (fileNameParts.length != 2) throw new InvalidOutputFileException();
     String outputFileName = fileNameParts[0] + "_output." + fileNameParts[1];
     return Paths.get(ROOT_PATH, outputFileName);

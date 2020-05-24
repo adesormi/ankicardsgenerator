@@ -27,14 +27,14 @@ public class FileReaderTest {
       CHINESE_CARD_FACTORY.createCard(ImmutableList.of("bye", "再见", "zai4 jian4"));
   private static final String VIETNAMESE_LINE1 = "I do, tôi làm, toi6 lam2";
   private static final Card VIETNAMESE_CARD1 =
-      VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 làm"));
+      VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 lam2"));
 
   @Mock private CardReader cardReader;
 
   private FileReader fileReader;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     MockitoAnnotations.initMocks(this);
   }
 
