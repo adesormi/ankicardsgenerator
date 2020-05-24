@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import static com.adesormi.ankicardsgenerator.Constants.POINT_SEPARATOR;
 import static com.adesormi.ankicardsgenerator.Constants.ROOT_PATH;
@@ -28,8 +27,8 @@ public class FileWriter {
         bw.write(cardWriter.writeCard(c));
         bw.newLine();
       }
-    } catch(IOException ioE) {
-      throw new InvalidOutputFileException();
+    } catch(Exception e) {
+      throw new InvalidOutputException();
     }
   }
 
@@ -42,4 +41,6 @@ public class FileWriter {
   }
 
   public static class InvalidOutputFileException extends RuntimeException {}
+
+  public static class InvalidOutputException extends RuntimeException {}
 }

@@ -2,6 +2,7 @@ package com.adesormi.ankicardsgenerator.io;
 
 import com.adesormi.ankicardsgenerator.cards.Card;
 import com.adesormi.ankicardsgenerator.cards.CardFactory;
+import com.adesormi.ankicardsgenerator.io.FileWriter.InvalidOutputException;
 import com.adesormi.ankicardsgenerator.io.FileWriter.InvalidOutputFileException;
 import com.google.common.collect.ImmutableList;
 import org.junit.After;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -72,6 +74,14 @@ public class FileWriterTest {
     fileWriter = new FileWriter(cardWriter);
 
     fileWriter.writeCardsToFile("notACsvFile", CHINESE_CARDS);
+  }
+
+  @Test(expected = InvalidOutputException.class)
+  public void writeCardsToFile_errorWhileWritting_throwInvalidOutputException() {
+    fileWriter = new FileWriter(cardWriter);
+    when(cardWriter.writeCard(CHINESE_CARD1)).thenThrow(new RuntimeException());
+
+    fileWriter.writeCardsToFile("test/resources/" + CSV_FILE_NAME, CHINESE_CARDS);
   }
 
   @Test
