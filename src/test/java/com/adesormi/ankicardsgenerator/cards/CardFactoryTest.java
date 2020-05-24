@@ -25,14 +25,15 @@ public class CardFactoryTest {
 
   @Test(expected = InvalidNumberOfFieldsException.class)
   public void createCard_tooManyValues_throwInvalidNumberOfFieldsException() {
-    cardFactory = new CardFactory(1, ImmutableList.of(ENGLISH, VIETNAMESE_VNI));
+    cardFactory = new CardFactory(1, ImmutableList.of(0), ImmutableList.of(ENGLISH, VIETNAMESE_VNI));
 
     cardFactory.createCard(ImmutableList.of("field1", "field2", "field3"));
   }
 
   @Test
-  public void createCard_2fields_success() {
-    cardFactory = new CardFactory(1, ImmutableList.of(ENGLISH, VIETNAMESE_VNI));
+  public void createCard_2fields1Immutable_success() {
+    cardFactory = new CardFactory(1, ImmutableList.of(1), ImmutableList.of(ENGLISH, VIETNAMESE_VNI));
+    CARD.getFields().get(1).setImmutable(true);
 
     Card card = cardFactory.createCard(ImmutableList.of("field1", "field2"));
 

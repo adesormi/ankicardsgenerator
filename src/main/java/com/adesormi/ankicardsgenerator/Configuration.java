@@ -14,13 +14,14 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Properties;
 
-import static com.adesormi.ankicardsgenerator.Constants.ROOT_PATH;
 import static com.adesormi.ankicardsgenerator.Constants.COMMA_SEPARATOR;
+import static com.adesormi.ankicardsgenerator.Constants.ROOT_PATH;
 
 public class Configuration {
 
   private static final String FIELDS_PROPERTY = "fields";
   private static final String MASTER_FIELD_PROPERTY = "master";
+  private static final String IMMUTABLE_FIELDS_PROPERTY = "immutable";
   private static final String NUMBER_OF_KEYS_PROPERTY = "number_of_keys";
   private static final String COLORS_PROPERTY = "colors";
   private static final String FORMS_PROPERTY = "forms";
@@ -60,7 +61,8 @@ public class Configuration {
   private void setupCardFactory() {
     ImmutableList<FieldType> fieldTypes = getFieldTypesFromProperties();
     int masterFieldIndex = getMasterFieldIndexFromProperties();
-    cardFactory = new CardFactory(masterFieldIndex, fieldTypes);
+    ImmutableList<Integer> immutableFieldsIndex = getImmutableFieldsIndexFromProperties();
+    cardFactory = new CardFactory(masterFieldIndex, immutableFieldsIndex, fieldTypes);
   }
 
   private ImmutableList<FieldType> getFieldTypesFromProperties() {
@@ -97,6 +99,29 @@ public class Configuration {
     } catch(NumberFormatException nfE) {
       throw new InvalidMasterFieldIndexException();
     }
+  }
+
+  private ImmutableList<Integer> getImmutableFieldsIndexFromProperties() {
+    String[] immutableFieldsIndexStr = loadImmutableFieldsIndexAsStringsFromProperties();
+    return parseImmutableFieldsIndex(immutableFieldsIndexStr);
+  }
+
+  private String[] loadImmutableFieldsIndexAsStringsFromProperties() {
+    String immutableFieldsIndexStr = properties.getProperty(IMMUTABLE_FIELDS_PROPERTY);
+    if (immutableFieldsIndexStr == null || immutableFieldsIndexStr.isEmpty()) return new String[]{};
+    return immutableFieldsIndexStr.trim().split(COMMA_SEPARATOR);
+  }
+
+  private ImmutableList<Integer> parseImmutableFieldsIndex(String[] immutableFieldsIndexStr) {
+    ImmutableList.Builder<Integer> builder = ImmutableList.builder();
+    for(String s : immutableFieldsIndexStr) {
+      try {
+        builder.add(Integer.parseInt(s) - 1); // -1 for 0 indexed list
+      } catch( NumberFormatException nfE) {
+        throw new InvalidImmutableFieldIndexException();
+      }
+    }
+    return builder.build();
   }
 
   private void setupCardFormatter() {
@@ -167,6 +192,8 @@ public class Configuration {
   public static class MissingMasterFieldException extends RuntimeException {}
 
   public static class InvalidMasterFieldIndexException extends RuntimeException {}
+
+  public static class InvalidImmutableFieldIndexException extends RuntimeException {}
 
   public static class MissingNumberOfKeysException extends RuntimeException {}
 

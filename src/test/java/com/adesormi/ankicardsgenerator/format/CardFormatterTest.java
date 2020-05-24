@@ -25,7 +25,8 @@ public class CardFormatterTest {
       ImmutableList.of(Form.NONE, Form.NONE, RECTANGLE, Form.NONE, CIRCLE, Form.NONE, Form.NONE);
 
   private static final CardFactory VIETNAMESE_CARD_FACTORY =
-      new CardFactory(2, ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
+      new CardFactory(
+          2, ImmutableList.of(0), ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
 
   private static final FieldFactory FIELD_FACTORY = new FieldFactory();
   private static final Field VIETNAMESE_FIELD = FIELD_FACTORY.createField(VIETNAMESE, "tôi làm");
@@ -43,6 +44,7 @@ public class CardFormatterTest {
   @Test
   public void formatCard_immutableField_notFormatted() {
     vietnameseCard.getFields().get(1).setImmutable(true);
+    VIETNAMESE_FIELD.setImmutable(true);
 
     cardFormatter.formatCard(vietnameseCard);
 

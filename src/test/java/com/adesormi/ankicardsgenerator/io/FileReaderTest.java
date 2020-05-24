@@ -15,9 +15,10 @@ import static org.mockito.Mockito.when;
 public class FileReaderTest {
 
   private static final CardFactory CHINESE_CARD_FACTORY =
-      new CardFactory(3, ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
+      new CardFactory(3, ImmutableList.of(0), ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
   private static final CardFactory VIETNAMESE_CARD_FACTORY =
-      new CardFactory(3, ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
+      new CardFactory(
+          3, ImmutableList.of(0), ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
 
   private static final String CHINESE_LINE1 = "hello, 你好, ni3 hao3";
   private static final Card CHINESE_CARD1 =

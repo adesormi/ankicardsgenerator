@@ -51,7 +51,8 @@ public class Field {
     if (this == o) return true;
     if (!(o instanceof Field)) return false;
     Field field = (Field) o;
-    return Objects.equals(words, field.words) &&
+    return isImmutable == field.isImmutable &&
+        Objects.equals(words, field.words) &&
         fieldType == field.fieldType;
   }
 

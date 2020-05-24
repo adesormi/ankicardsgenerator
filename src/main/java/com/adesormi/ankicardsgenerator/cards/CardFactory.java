@@ -11,11 +11,16 @@ public class CardFactory {
 
   private final FieldFactory fieldFactory = new FieldFactory();
   private final int masterFieldIndex;
+  private final ImmutableList<Integer> immutableFieldsIndex;
   private final ImmutableList<FieldType> fieldTypes;
   private final int fieldsNumber;
 
-  public CardFactory(int masterFieldIndex, ImmutableList<FieldType> fieldTypes) {
+  public CardFactory(
+      int masterFieldIndex,
+      ImmutableList<Integer> immutableFieldsIndex,
+      ImmutableList<FieldType> fieldTypes) {
     this.masterFieldIndex = masterFieldIndex;
+    this.immutableFieldsIndex = immutableFieldsIndex;
     this.fieldTypes = fieldTypes;
     fieldsNumber = fieldTypes.size();
   }
@@ -26,7 +31,9 @@ public class CardFactory {
     for (int i = 0; i < fieldsValues.size(); ++i) {
       builder.add(fieldFactory.createField(fieldTypes.get(i), fieldsValues.get(i)));
     }
-    return new Card(masterFieldIndex, builder.build());
+    Card card = new Card(masterFieldIndex, builder.build());
+    immutableFieldsIndex.forEach(i -> card.getFields().get(i).setImmutable(true));
+    return card;
   }
 
   @Override

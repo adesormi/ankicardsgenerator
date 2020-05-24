@@ -20,12 +20,14 @@ import static com.google.common.truth.Truth.assertThat;
 public class ConfigurationTest {
 
   private static final CardFactory CHINESE_CARD_FACTORY =
-      new CardFactory(2, ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
+      new CardFactory(2, ImmutableList.of(0), ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
   private static final CardFactory VIETNAMESE_CARD_FACTORY =
-      new CardFactory(1, ImmutableList.of(ENGLISH, VIETNAMESE_VNI, VIETNAMESE));
+      new CardFactory(
+          1, ImmutableList.of(0), ImmutableList.of(ENGLISH, VIETNAMESE_VNI, VIETNAMESE));
 
   private static final CardFormatter ONE_KEY_NO_COLOR_NO_FORM_CARD_FORMATTER =
-      new CardFormatter(ImmutableList.of(Color.NONE, Color.NONE), ImmutableList.of(Form.NONE, Form.NONE));
+      new CardFormatter(
+          ImmutableList.of(Color.NONE, Color.NONE), ImmutableList.of(Form.NONE, Form.NONE));
   private static final CardFormatter TWO_KEYS_NONE_RED_COLORS_CIRCLE_NONE_FORMS_CARD_FORMATTER =
       new CardFormatter(
           ImmutableList.of(Color.NONE, Color.NONE, Color.RED),
@@ -57,6 +59,11 @@ public class ConfigurationTest {
   @Test(expected = InvalidMasterFieldIndexException.class)
   public void constructor_propertiesWithInvalidMasterFieldIndex_throwInvalidMasterFieldIndexException() {
     configuration = new Configuration("test/resources/invalidMasterFieldIndex.properties");
+  }
+
+  @Test(expected = InvalidImmutableFieldIndexException.class)
+  public void constructor_propertiesWithInvalidImmutableFieldIndex_throwInvalidImmutableFieldIndexException() {
+    configuration = new Configuration("test/resources/invalidImmutableFieldIndex.properties");
   }
 
   @Test
