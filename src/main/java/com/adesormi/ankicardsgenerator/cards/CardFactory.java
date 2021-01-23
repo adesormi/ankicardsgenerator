@@ -26,7 +26,7 @@ public class CardFactory {
   }
 
   public Card createCard(ImmutableList<String> fieldsValues) {
-    if (fieldsValues.size() != fieldsNumber) throw new InvalidNumberOfFieldsException();
+    if (fieldsValues.size() != fieldsNumber) throw new InvalidCardException();
     ImmutableList.Builder<Field> builder = ImmutableList.builder();
     for (int i = 0; i < fieldsValues.size(); ++i) {
       builder.add(fieldFactory.createField(fieldTypes.get(i), fieldsValues.get(i)));
@@ -44,6 +44,4 @@ public class CardFactory {
     return masterFieldIndex == that.masterFieldIndex &&
         Objects.equals(fieldTypes, that.fieldTypes);
   }
-
-  public static class InvalidNumberOfFieldsException extends RuntimeException {}
 }

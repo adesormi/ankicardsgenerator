@@ -41,5 +41,4 @@ public enum FieldType {
     return keysParser;
   }
 
-  public static class InvalidFieldTypeException extends RuntimeException {}
 }

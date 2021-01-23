@@ -1,6 +1,5 @@
 package com.adesormi.ankicardsgenerator.cards;
 
-import com.adesormi.ankicardsgenerator.cards.CardFactory.InvalidNumberOfFieldsException;
 import com.adesormi.ankicardsgenerator.fields.FieldFactory;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
@@ -23,8 +22,8 @@ public class CardFactoryTest {
 
   private CardFactory cardFactory;
 
-  @Test(expected = InvalidNumberOfFieldsException.class)
-  public void createCard_tooManyValues_throwInvalidNumberOfFieldsException() {
+  @Test(expected = InvalidCardException.class)
+  public void createCard_tooManyValues_throwInvalidCardException() {
     cardFactory = new CardFactory(1, ImmutableList.of(0), ImmutableList.of(ENGLISH, VIETNAMESE_VNI));
 
     cardFactory.createCard(ImmutableList.of("field1", "field2", "field3"));

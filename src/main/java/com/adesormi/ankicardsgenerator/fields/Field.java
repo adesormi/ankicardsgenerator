@@ -35,7 +35,7 @@ public class Field {
   }
 
   private void validateValue(String value) {
-    if (value == null || value.isEmpty()) throw new InvalidValueException();
+    if (value == null || value.isEmpty()) throw new InvalidFieldValueException();
   }
 
   private ImmutableList<Word> parseWords(String value) {
@@ -56,5 +56,4 @@ public class Field {
         fieldType == field.fieldType;
   }
 
-  public static class InvalidValueException extends RuntimeException {}
 }

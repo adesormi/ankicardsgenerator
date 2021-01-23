@@ -2,6 +2,7 @@ package com.adesormi.ankicardsgenerator.io;
 
 import com.adesormi.ankicardsgenerator.cards.Card;
 import com.adesormi.ankicardsgenerator.cards.CardFactory;
+import com.adesormi.ankicardsgenerator.cards.InvalidCardException;
 import com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;
@@ -22,12 +23,10 @@ public class CardReader {
   }
 
   private ImmutableList<String> getFieldsAsStringsFromLine(String line) {
-    if (line == null || line.isEmpty()) throw new InvalidCardInputException();
+    if (line == null || line.isEmpty()) throw new InvalidCardException();
     String[] fields = line.trim().split(COMMA_SEPARATOR);
     ImmutableList.Builder<String> builder = ImmutableList.builder();
     Arrays.stream(fields).forEach(f -> builder.add(f.trim()));
     return builder.build();
   }
-
-  public static class InvalidCardInputException extends RuntimeException {}
 }

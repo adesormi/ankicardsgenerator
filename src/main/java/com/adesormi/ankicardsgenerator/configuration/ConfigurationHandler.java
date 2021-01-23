@@ -1,4 +1,4 @@
-package com.adesormi.ankicardsgenerator;
+package com.adesormi.ankicardsgenerator.configuration;
 
 import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.fields.FieldType;
@@ -8,6 +8,7 @@ import com.adesormi.ankicardsgenerator.format.Form;
 import com.google.common.collect.ImmutableList;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,9 +16,10 @@ import java.util.Arrays;
 import java.util.Properties;
 
 import static com.adesormi.ankicardsgenerator.Constants.COMMA_SEPARATOR;
-import static com.adesormi.ankicardsgenerator.Constants.ROOT_PATH;
 
-public class Configuration {
+public class ConfigurationHandler {
+
+  private static final Path DEFAULT_CONFIG_FILE = Paths.get(ClassLoader.getSystemClassLoader().getResource("config.properties").getPath());
 
   private static final String FIELDS_PROPERTY = "fields";
   private static final String MASTER_FIELD_PROPERTY = "master";
@@ -26,43 +28,60 @@ public class Configuration {
   private static final String COLORS_PROPERTY = "colors";
   private static final String FORMS_PROPERTY = "forms";
 
-  private Properties properties;
   private int numberOfKeys;
 
-  private CardFactory cardFactory;
-  private CardFormatter cardFormatter;
+  private Configuration configuration;
+  private Properties properties;
 
-  public Configuration(String propertiesFileName) {
-    loadProperties(propertiesFileName);
-    setupConfiguration();
+  public boolean updateConfiguration(Path configFile) {
+    try {
+      loadConfiguration(configFile);
+      persistProperties();
+    } catch(Exception e) {
+      return false;
+    }
+    return true;
   }
 
-  public CardFactory getCardFactory() {
-    return cardFactory;
+  private void loadConfiguration(Path configFile) {
+    loadProperties(configFile);
+    propertiesToConfiguration();
   }
 
-  public CardFormatter getCardFormatter() { return cardFormatter; }
+  private void persistProperties() {
+    try(FileOutputStream out = new FileOutputStream(DEFAULT_CONFIG_FILE.toFile())) {
+      properties.store(out, "");
+    } catch(IOException ioException) {
+      throw new MissingConfigurationException();
+    }
+  }
 
-  private void loadProperties(String propertiesFileName) {
-    Path propertiesFilePath = Paths.get(ROOT_PATH, propertiesFileName);
+  public Configuration loadConfiguration() {
+    loadProperties(DEFAULT_CONFIG_FILE);
+    propertiesToConfiguration();
+    return configuration;
+  }
+
+  private void loadProperties(Path configFile) {
     properties = new Properties();
-    try(FileInputStream in = new FileInputStream(propertiesFilePath.toFile())) {
+    try(FileInputStream in = new FileInputStream(configFile.toAbsolutePath().toFile())) {
       properties.load(in);
     } catch(IOException ioException) {
       throw new MissingConfigurationException();
     }
   }
 
-  private void setupConfiguration() {
-    setupCardFactory();
-    setupCardFormatter();
+  private void propertiesToConfiguration() {
+    CardFactory cardFactory = setupCardFactory();
+    CardFormatter cardFormatter = setupCardFormatter();
+    configuration = new Configuration(cardFactory, cardFormatter);
   }
 
-  private void setupCardFactory() {
+  private CardFactory setupCardFactory() {
     ImmutableList<FieldType> fieldTypes = getFieldTypesFromProperties();
     int masterFieldIndex = getMasterFieldIndexFromProperties();
     ImmutableList<Integer> immutableFieldsIndex = getImmutableFieldsIndexFromProperties();
-    cardFactory = new CardFactory(masterFieldIndex, immutableFieldsIndex, fieldTypes);
+    return new CardFactory(masterFieldIndex, immutableFieldsIndex, fieldTypes);
   }
 
   private ImmutableList<FieldType> getFieldTypesFromProperties() {
@@ -114,21 +133,21 @@ public class Configuration {
 
   private ImmutableList<Integer> parseImmutableFieldsIndex(String[] immutableFieldsIndexStr) {
     ImmutableList.Builder<Integer> builder = ImmutableList.builder();
-    for(String s : immutableFieldsIndexStr) {
+    for (String s : immutableFieldsIndexStr) {
       try {
         builder.add(Integer.parseInt(s) - 1); // -1 for 0 indexed list
-      } catch( NumberFormatException nfE) {
+      } catch(NumberFormatException nfE) {
         throw new InvalidImmutableFieldIndexException();
       }
     }
     return builder.build();
   }
 
-  private void setupCardFormatter() {
+  private CardFormatter setupCardFormatter() {
     numberOfKeys = getNumberOfKeysFromProperties();
     ImmutableList<Color> colors = getColorsFromProperties();
     ImmutableList<Form> forms = getFormsFromProperties();
-    cardFormatter = new CardFormatter(colors, forms);
+    return new CardFormatter(colors, forms);
   }
 
   private int getNumberOfKeysFromProperties() {

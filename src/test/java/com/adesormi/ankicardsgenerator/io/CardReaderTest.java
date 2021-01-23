@@ -1,78 +1,76 @@
 package com.adesormi.ankicardsgenerator.io;
 
+import com.adesormi.ankicardsgenerator.TestUtil;
 import com.adesormi.ankicardsgenerator.cards.Card;
 import com.adesormi.ankicardsgenerator.cards.CardFactory;
-import com.google.common.collect.ImmutableList;
+import com.adesormi.ankicardsgenerator.cards.InvalidCardException;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
-import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
-import static com.adesormi.ankicardsgenerator.io.CardReader.InvalidCardInputException;
+import static com.adesormi.ankicardsgenerator.TestUtil.*;
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class CardReaderTest {
 
-  private static final CardFactory CHINESE_CARD_FACTORY =
-      new CardFactory(3, ImmutableList.of(0), ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
-  private static final CardFactory VIETNAMESE_CARD_FACTORY =
-      new CardFactory(
-          3, ImmutableList.of(0), ImmutableList.of(ENGLISH, VIETNAMESE, VIETNAMESE_VNI));
-
-  private static final String CHINESE_LINE = "hello, 你好, ni3 hao3";
-  private static final ImmutableList<String> CHINESE_FIELDS =
-      ImmutableList.of("hello", "你好", "ni3 hao3");
-  private static final Card CHINESE_CARD =
-      CHINESE_CARD_FACTORY.createCard(ImmutableList.of("hello", "你好", "ni3 hao3"));
-  private static final String VIETNAMESE_LINE = "I do, tôi làm, toi6 lam2";
-  private static final ImmutableList<String> VIETNAMESE_FIELDS =
-      ImmutableList.of("I do", "tôi làm", "toi6 lam2");
-  private static final Card VIETNAMESE_CARD =
-      VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 lam2"));
-
+  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
   @Mock CardFactory cardFactory;
-
+  private TestUtil testUtil;
   private CardReader cardReader;
 
   @Before
   public void setUp() {
-    MockitoAnnotations.initMocks(this);
+    testUtil = new TestUtil();
   }
 
-  @Test(expected = InvalidCardInputException.class)
-  public void readLine_nullLine_throwInvalidCardInputException() {
+  @Test(expected = InvalidCardException.class)
+  public void readLine_nullLine_throwInvalidCardException() {
     cardReader = new CardReader(cardFactory);
 
     cardReader.readLine(null);
   }
 
-  @Test(expected = InvalidCardInputException.class)
-  public void readLine_emptyLine_throwInvalidCardInputException() {
+  @Test(expected = InvalidCardException.class)
+  public void readLine_emptyLine_throwInvalidCardException() {
     cardReader = new CardReader(cardFactory);
 
     cardReader.readLine("");
   }
 
+  @Test(expected = InvalidCardException.class)
+  public void readLine_invalidFields_throwInvalidCardException() {
+    cardReader = new CardReader(cardFactory);
+
+    when(cardFactory.createCard(any())).thenThrow(InvalidCardException.class);
+
+    cardReader.readLine(chineseLine());
+  }
+
   @Test
   public void readLine_chineseLine_chineseCard() {
     cardReader = new CardReader(cardFactory);
+    Card chineseCard = testUtil.chineseCard();
 
-    when(cardFactory.createCard(CHINESE_FIELDS)).thenReturn(CHINESE_CARD);
+    when(cardFactory.createCard(chineseFields())).thenReturn(chineseCard);
 
-    assertThat(cardReader.readLine(CHINESE_LINE)).isEqualTo(CHINESE_CARD);
+    assertThat(cardReader.readLine(chineseLine())).isEqualTo(chineseCard);
   }
 
   @Test
   public void readLine_vietnameseLine_vietnameseCard() {
     cardReader = new CardReader(cardFactory);
+    Card vietnameseCard = testUtil.vietnameseCard();
 
-    when(cardFactory.createCard(VIETNAMESE_FIELDS)).thenReturn(VIETNAMESE_CARD);
+    when(cardFactory.createCard(vietnameseFields())).thenReturn(vietnameseCard);
 
-    assertThat(cardReader.readLine(VIETNAMESE_LINE)).isEqualTo(VIETNAMESE_CARD);
+    assertThat(cardReader.readLine(vietnameseLine())).isEqualTo(vietnameseCard);
   }
 }

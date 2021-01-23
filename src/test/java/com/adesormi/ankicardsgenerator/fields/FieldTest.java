@@ -1,10 +1,6 @@
 package com.adesormi.ankicardsgenerator.fields;
 
-import com.adesormi.ankicardsgenerator.fields.Field.InvalidValueException;
-import com.adesormi.ankicardsgenerator.format.Color;
-import com.adesormi.ankicardsgenerator.format.Form;
 import com.google.common.collect.ImmutableList;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -22,12 +18,12 @@ public class FieldTest {
   );
   private static final ImmutableList<Integer> KEYS = ImmutableList.of(1, 2);
 
-  @Test(expected = InvalidValueException.class)
+  @Test(expected = InvalidFieldValueException.class)
   public void constructor_nullValue_throwInvalidValueException() {
     new Field(CHINESE, null);
   }
 
-  @Test(expected = InvalidValueException.class)
+  @Test(expected = InvalidFieldValueException.class)
   public void constructor_emptyValue_throwInvalidValueException() {
     new Field(FRENCH, "");
   }

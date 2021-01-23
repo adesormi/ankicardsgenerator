@@ -33,5 +33,4 @@ public enum Color implements FormattingKey {
   @Override
   public String closingTag() { return closingTag; }
 
-  public static class InvalidColorException extends RuntimeException {}
 }

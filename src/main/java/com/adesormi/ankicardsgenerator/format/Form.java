@@ -33,5 +33,4 @@ public enum Form implements FormattingKey {
   @Override
   public String closingTag() { return closingTag; }
 
-  public static class InvalidFormException extends RuntimeException {}
 }

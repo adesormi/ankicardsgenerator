@@ -5,9 +5,6 @@ import com.adesormi.ankicardsgenerator.fields.Field;
 import com.adesormi.ankicardsgenerator.fields.Word;
 import com.google.common.collect.ImmutableList;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 public class CardFormatter {
 
   private final ImmutableList<Color> colors;
