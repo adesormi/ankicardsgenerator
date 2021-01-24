@@ -8,11 +8,11 @@ import com.google.common.collect.ImmutableList;
 public class CardFormatter {
 
   private final ImmutableList<Color> colors;
-  private final ImmutableList<Form> forms;
+  private final ImmutableList<Font> fonts;
 
-  public CardFormatter(ImmutableList<Color> colors, ImmutableList<Form> forms) {
+  public CardFormatter(ImmutableList<Color> colors, ImmutableList<Font> fonts) {
     this.colors = colors;
-    this.forms = forms;
+    this.fonts = fonts;
   }
 
   public void formatCard(Card card) {
@@ -28,7 +28,7 @@ public class CardFormatter {
   }
 
   private void formatWord(Word word, Integer key) {
-    word.setForm(forms.get(key));
+    word.setForm(fonts.get(key));
     word.setColor(colors.get(key));
   }
 
@@ -37,10 +37,10 @@ public class CardFormatter {
     if (this == o) return true;
     if (!(o instanceof CardFormatter)) return false;
     CardFormatter that = (CardFormatter) o;
-    if (colors.size() != that.colors.size() || forms.size() != that.forms.size()) return false;
+    if (colors.size() != that.colors.size() || fonts.size() != that.fonts.size()) return false;
     for (int i = 0; i < colors.size(); ++i) {
       if (colors.get(i) != that.colors.get(i)) return false;
-      if (forms.get(i) != that.forms.get(i)) return false;
+      if (fonts.get(i) != that.fonts.get(i)) return false;
     }
     return true;
   }

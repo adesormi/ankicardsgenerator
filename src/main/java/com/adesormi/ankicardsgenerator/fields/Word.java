@@ -1,7 +1,7 @@
 package com.adesormi.ankicardsgenerator.fields;
 
 import com.adesormi.ankicardsgenerator.format.Color;
-import com.adesormi.ankicardsgenerator.format.Form;
+import com.adesormi.ankicardsgenerator.format.Font;
 
 import java.util.Objects;
 
@@ -19,8 +19,8 @@ public class Word {
     value = color.openingTag() + value + color.closingTag();
   }
 
-  public void setForm(Form form) {
-    value = form.openingTag() + value + form.closingTag();
+  public void setForm(Font font) {
+    value = font.openingTag() + value + font.closingTag();
   }
 
   @Override

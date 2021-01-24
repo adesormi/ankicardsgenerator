@@ -12,8 +12,8 @@ import org.junit.runners.JUnit4;
 
 import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
 import static com.adesormi.ankicardsgenerator.format.Color.*;
-import static com.adesormi.ankicardsgenerator.format.Form.CIRCLE;
-import static com.adesormi.ankicardsgenerator.format.Form.RECTANGLE;
+import static com.adesormi.ankicardsgenerator.format.Font.BOLD;
+import static com.adesormi.ankicardsgenerator.format.Font.ITALIC;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(JUnit4.class)
@@ -21,8 +21,8 @@ public class CardFormatterTest {
 
   private static final ImmutableList<Color> COLORS =
       ImmutableList.of(Color.NONE, Color.NONE, RED, Color.NONE, GREEN, Color.NONE, BLUE);
-  private static final ImmutableList<Form> FORMS =
-      ImmutableList.of(Form.NONE, Form.NONE, RECTANGLE, Form.NONE, CIRCLE, Form.NONE, Form.NONE);
+  private static final ImmutableList<Font> FONTS =
+      ImmutableList.of(Font.NONE, Font.NONE, ITALIC, Font.NONE, BOLD, Font.NONE, Font.NONE);
 
   private static final CardFactory VIETNAMESE_CARD_FACTORY =
       new CardFactory(
@@ -36,7 +36,7 @@ public class CardFormatterTest {
 
   @Before
   public void setUp() {
-    cardFormatter = new CardFormatter(COLORS, FORMS);
+    cardFormatter = new CardFormatter(COLORS, FONTS);
     vietnameseCard =
         VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 lam2"));
   }

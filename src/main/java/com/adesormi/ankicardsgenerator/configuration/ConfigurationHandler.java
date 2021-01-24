@@ -4,7 +4,7 @@ import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.fields.FieldType;
 import com.adesormi.ankicardsgenerator.format.CardFormatter;
 import com.adesormi.ankicardsgenerator.format.Color;
-import com.adesormi.ankicardsgenerator.format.Form;
+import com.adesormi.ankicardsgenerator.format.Font;
 import com.google.common.collect.ImmutableList;
 
 import java.io.FileInputStream;
@@ -26,7 +26,7 @@ public class ConfigurationHandler {
   private static final String IMMUTABLE_FIELDS_PROPERTY = "immutable";
   private static final String NUMBER_OF_KEYS_PROPERTY = "number_of_keys";
   private static final String COLORS_PROPERTY = "colors";
-  private static final String FORMS_PROPERTY = "forms";
+  private static final String FONTS_PROPERTY = "fonts";
 
   private int numberOfKeys;
 
@@ -146,8 +146,8 @@ public class ConfigurationHandler {
   private CardFormatter setupCardFormatter() {
     numberOfKeys = getNumberOfKeysFromProperties();
     ImmutableList<Color> colors = getColorsFromProperties();
-    ImmutableList<Form> forms = getFormsFromProperties();
-    return new CardFormatter(colors, forms);
+    ImmutableList<Font> fonts = getFontsFromProperties();
+    return new CardFormatter(colors, fonts);
   }
 
   private int getNumberOfKeysFromProperties() {
@@ -185,16 +185,16 @@ public class ConfigurationHandler {
     return builder.build();
   }
 
-  private ImmutableList<Form> getFormsFromProperties() {
-    String[] formsStr = loadArrayOfStringsFromProperties(FORMS_PROPERTY);
-    formsStr = Arrays.copyOf(formsStr, numberOfKeys);
-    return parseForms(formsStr);
+  private ImmutableList<Font> getFontsFromProperties() {
+    String[] fontsStr = loadArrayOfStringsFromProperties(FONTS_PROPERTY);
+    fontsStr = Arrays.copyOf(fontsStr, numberOfKeys);
+    return parseFonts(fontsStr);
   }
 
-  private ImmutableList<Form> parseForms(String[] formsStr) {
-    ImmutableList.Builder<Form> builder = ImmutableList.builder();
-    builder.add(Form.NONE); // add NONE for 0 indexed list
-    Arrays.stream(formsStr).forEach(f -> builder.add(Form.getFormFromString(f)));
+  private ImmutableList<Font> parseFonts(String[] fontsStr) {
+    ImmutableList.Builder<Font> builder = ImmutableList.builder();
+    builder.add(Font.NONE); // add NONE for 0 indexed list
+    Arrays.stream(fontsStr).forEach(f -> builder.add(Font.getFontFromString(f)));
     return builder.build();
   }
 
@@ -203,18 +203,4 @@ public class ConfigurationHandler {
     if (propertiesStr == null) propertiesStr = "";
     return propertiesStr.trim().split(COMMA_SEPARATOR);
   }
-
-  public static class MissingConfigurationException extends RuntimeException {}
-
-  public static class MissingFieldsException extends RuntimeException {}
-
-  public static class MissingMasterFieldException extends RuntimeException {}
-
-  public static class InvalidMasterFieldIndexException extends RuntimeException {}
-
-  public static class InvalidImmutableFieldIndexException extends RuntimeException {}
-
-  public static class MissingNumberOfKeysException extends RuntimeException {}
-
-  public static class InvalidNumberOfKeysException extends RuntimeException {}
 }
