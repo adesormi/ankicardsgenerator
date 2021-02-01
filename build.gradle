@@ -11,10 +11,12 @@ repositories {
 
 jar {
     manifest {
-        attributes "Main-Class": "com.adesormi.ankicardsgenerator.Application"
+        attributes(
+                'Main-Class': 'com.adesormi.ankicardsgenerator.Application'
+        )
     }
     from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
