@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import static com.adesormi.ankicardsgenerator.Constants.COMMA_SEPARATOR;
 
 public class ConfigurationHandler {
 
-  private static final Path DEFAULT_CONFIG_FILE = Paths.get(ClassLoader.getSystemClassLoader().getResource("config.properties").getPath());
+  private static final Path DEFAULT_CONFIG_FILE = Paths.get("config.properties").toAbsolutePath();
 
   private static final String FIELDS_PROPERTY = "fields";
   private static final String MASTER_FIELD_PROPERTY = "master";
@@ -49,10 +50,10 @@ public class ConfigurationHandler {
   }
 
   private void persistProperties() {
-    try(FileOutputStream out = new FileOutputStream(DEFAULT_CONFIG_FILE.toFile())) {
-      properties.store(out, "");
+    try(OutputStream out = new FileOutputStream(DEFAULT_CONFIG_FILE.toFile())) {
+      properties.store(out, null);
     } catch(IOException ioException) {
-      throw new MissingConfigurationException();
+      throw new ConfigurationPersistenceException();
     }
   }
 

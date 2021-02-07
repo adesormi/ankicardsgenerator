@@ -6,6 +6,8 @@ import com.adesormi.ankicardsgenerator.configuration.ConfigurationHandler;
 import com.adesormi.ankicardsgenerator.format.CardFormatter;
 import com.adesormi.ankicardsgenerator.io.*;
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Application {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
   private Command command;
   private Path configFile;
@@ -29,6 +33,8 @@ public class Application {
   }
 
   private void run(String[] args) {
+    LOGGER.info("Starting Anki Cards Generator...");
+    LOGGER.info("");
     try {
       validateArgs(args);
       executeCommand();
@@ -55,9 +61,10 @@ public class Application {
   }
 
   private void configure() {
+    LOGGER.info("Configuring...");
     ConfigurationHandler configHandler = new ConfigurationHandler();
     boolean updated = configHandler.updateConfiguration(configFile);
-    System.out.println(updated ? "Configuration has been updated successfully" : "An error occurred during the configuration update.");
+    LOGGER.info(updated ? "Configuration successfully updated" : "An error occurred during the configuration update.");
   }
 
   private void setup() {
@@ -68,6 +75,7 @@ public class Application {
   }
 
   private void generateCards() {
+    LOGGER.info("Generating cards...");
     getFilesFromWorkingDirectory().forEach(f -> {
       ImmutableList<Card> cards = fileReader.readCardsFromFile(f);
       cards.forEach(cardFormatter::formatCard);
@@ -96,11 +104,11 @@ public class Application {
   }
 
   private void help() {
-    System.out.println("usage: ./ankicardsgenerator <command> <args>");
-    System.out.println();
-    System.out.println("  - ./ankicardsgenerator configure <path-to-file>");
-    System.out.println("  - ./ankicardsgenerator generate <input-directory>");
-    System.out.println("  - ./ankicardsgenerator help");
+    LOGGER.info("Usage: ./ankicardsgenerator <command> <args>");
+    LOGGER.info("");
+    LOGGER.info("  - ./ankicardsgenerator configure <path-to-file>");
+    LOGGER.info("  - ./ankicardsgenerator generate <input-directory>");
+    LOGGER.info("  - ./ankicardsgenerator help");
   }
 
   private void validateArgs(String[] args) {
@@ -108,11 +116,11 @@ public class Application {
     switch (args[0]) {
       case "configure":
         command = Command.CONFIGURE;
-        configFile = getPathFromSecondArg(args);
+        configFile = getConfigFilePath(args);
         break;
       case "generate":
         command = Command.GENERATE;
-        workingDirectory = getPathFromSecondArg(args);
+        workingDirectory = getCardsDirPath(args);
         break;
       case "help":
         command = Command.HELP;
@@ -122,8 +130,13 @@ public class Application {
     }
   }
 
-  private Path getPathFromSecondArg(String[] args) {
-    if (args.length < 2) throw new InvalidArgsException();
+  private Path getConfigFilePath(String[] args) {
+    Path file = Paths.get(args[1]);
+    if (!file.toFile().isFile()) throw new InvalidArgsException();
+    return file;
+  }
+
+  private Path getCardsDirPath(String[] args) {
     Path dir = Paths.get(args[1]);
     if (!dir.toFile().isDirectory()) throw new InvalidArgsException();
     return dir;

@@ -3,13 +3,11 @@ package com.adesormi.ankicardsgenerator.io;
 import com.adesormi.ankicardsgenerator.TestUtil;
 import com.adesormi.ankicardsgenerator.cards.Card;
 import com.google.common.collect.ImmutableList;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,29 +17,32 @@ import static com.adesormi.ankicardsgenerator.TestUtil.*;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
+
 public class FileWriterTest {
 
   private static final String OUTPUT_FILE = "filename_output.csv";
-  
-  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+  private AutoCloseable closeable;
   @Mock private CardWriter cardWriter;
   private TestUtil testUtil;
   private ImmutableList<Card> chineseCards;
   private FileWriter fileWriter;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
+    closeable = MockitoAnnotations.openMocks(this);
     testUtil = new TestUtil();
     chineseCards = ImmutableList.of(testUtil.chineseCard(), testUtil.chineseCard2());
   }
 
-  @After
-  public void tearDown() throws Exception {
+  @AfterEach
+  void tearDown() throws Exception {
     Files.deleteIfExists(testFile(OUTPUT_FILE));
+    closeable.close();
   }
 
   @Test
-  public void writeCardsToFile_twoChineseCards_fileWithTwoLines() {
+  void writeCardsToFile_twoChineseCards_fileWithTwoLines() {
     fileWriter = new FileWriter(cardWriter);
     when(cardWriter.writeCard(testUtil.chineseCard())).thenReturn(chineseLine());
     when(cardWriter.writeCard(testUtil.chineseCard2())).thenReturn(chineseLine2());
@@ -51,7 +52,7 @@ public class FileWriterTest {
   }
 
   @Test
-  public void writeCardsToFile_oneVietnameseCard_fileWithOneLine() {
+  void writeCardsToFile_oneVietnameseCard_fileWithOneLine() {
     fileWriter = new FileWriter(cardWriter);
     when(cardWriter.writeCard(testUtil.vietnameseCard())).thenReturn(vietnameseLine());
 

@@ -5,16 +5,14 @@ import com.adesormi.ankicardsgenerator.format.CardFormatter;
 import com.adesormi.ankicardsgenerator.format.Color;
 import com.adesormi.ankicardsgenerator.format.Font;
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.adesormi.ankicardsgenerator.TestUtil.testFile;
 import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(JUnit4.class)
+
 public class ConfigurationHandlerTest {
 
   private static final CardFactory CHINESE_CARD_FACTORY =
@@ -37,38 +35,38 @@ public class ConfigurationHandlerTest {
 
   private ConfigurationHandler configurationHandler;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     configurationHandler = new ConfigurationHandler();
   }
 
   @Test
-  public void updateConfiguration_propertiesWithNoFields_returnsFalse() {
+  void updateConfiguration_propertiesWithNoFields_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("noFields.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_propertiesWithInvalidFieldType_returnsFalse() {
+  void updateConfiguration_propertiesWithInvalidFieldType_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("invalidFieldType.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_propertiesWithNoMasterField_returnsFalse() {
+  void updateConfiguration_propertiesWithNoMasterField_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("noMasterField.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_propertiesWithInvalidMasterFieldIndex_returnsFalse() {
+  void updateConfiguration_propertiesWithInvalidMasterFieldIndex_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("invalidMasterFieldIndex.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_propertiesWithInvalidImmutableFieldIndex_returnsFalse() {
+  void updateConfiguration_propertiesWithInvalidImmutableFieldIndex_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("invalidImmutableFieldIndex.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_chineseProperties_success() {
+  void updateConfiguration_chineseProperties_success() {
     assertThat(configurationHandler.updateConfiguration(testFile("chinese.properties"))).isTrue();
     Configuration configuration = configurationHandler.loadConfiguration();
 
@@ -76,7 +74,7 @@ public class ConfigurationHandlerTest {
   }
 
   @Test
-  public void updateConfiguration_vietnameseProperties_success() {
+  void updateConfiguration_vietnameseProperties_success() {
     assertThat(configurationHandler.updateConfiguration(testFile("vietnamese.properties"))).isTrue();
     Configuration configuration = configurationHandler.loadConfiguration();
 
@@ -84,17 +82,17 @@ public class ConfigurationHandlerTest {
   }
 
   @Test
-  public void updateConfiguration_propertiesWithNoNumberOfKeys_returnsFalse() {
+  void updateConfiguration_propertiesWithNoNumberOfKeys_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("noNumberOfKeys.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_propertiesWithNaNAsNumberOfKeys_returnsFalse() {
+  void updateConfiguration_propertiesWithNaNAsNumberOfKeys_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("notANumberAsNumberOfKeys.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_propertiesWithNegativeNumberOfKeys_returnsFalse() {
+  void updateConfiguration_propertiesWithNegativeNumberOfKeys_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("negativeNumberOfKeys.properties"))).isFalse();
   }
 
@@ -104,7 +102,7 @@ public class ConfigurationHandlerTest {
   }
 
   @Test
-  public void updateConfiguration_propertiesWith1KeyNoColorAndNoFont_success() {
+  void updateConfiguration_propertiesWith1KeyNoColorAndNoFont_success() {
     assertThat(configurationHandler.updateConfiguration(testFile("1KeyNoColorNoFont.properties"))).isTrue();
     Configuration configuration = configurationHandler.loadConfiguration();
 
@@ -112,7 +110,7 @@ public class ConfigurationHandlerTest {
   }
 
   @Test
-  public void updateConfiguration_propertiesWith1KeyEmptyColorsEmptyFonts_success() {
+  void updateConfiguration_propertiesWith1KeyEmptyColorsEmptyFonts_success() {
     assertThat(configurationHandler.updateConfiguration(testFile(
         "1KeyEmptyColorsEmptyFonts.properties"))).isTrue();
     Configuration configuration = configurationHandler.loadConfiguration();
@@ -126,12 +124,12 @@ public class ConfigurationHandlerTest {
   }
 
   @Test
-  public void updateConfiguration_propertiesWithInvalidFont_returnsFalse() {
+  void updateConfiguration_propertiesWithInvalidFont_returnsFalse() {
     assertThat(configurationHandler.updateConfiguration(testFile("invalidFont.properties"))).isFalse();
   }
 
   @Test
-  public void updateConfiguration_propertiesWith2KeysNoneRedColorsBoldNoneFonts_success() {
+  void updateConfiguration_propertiesWith2KeysNoneRedColorsBoldNoneFonts_success() {
     assertThat(configurationHandler.updateConfiguration(testFile("2KeysNoneRedColorsBoldNoneFonts.properties"))).isTrue();
     Configuration configuration = configurationHandler.loadConfiguration();
 

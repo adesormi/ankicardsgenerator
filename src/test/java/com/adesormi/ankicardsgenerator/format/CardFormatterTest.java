@@ -5,10 +5,8 @@ import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.fields.Field;
 import com.adesormi.ankicardsgenerator.fields.FieldFactory;
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
 import static com.adesormi.ankicardsgenerator.format.Color.*;
@@ -16,7 +14,7 @@ import static com.adesormi.ankicardsgenerator.format.Font.BOLD;
 import static com.adesormi.ankicardsgenerator.format.Font.ITALIC;
 import static com.google.common.truth.Truth.assertThat;
 
-@RunWith(JUnit4.class)
+
 public class CardFormatterTest {
 
   private static final ImmutableList<Color> COLORS =
@@ -34,15 +32,15 @@ public class CardFormatterTest {
   private CardFormatter cardFormatter;
   private Card vietnameseCard;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     cardFormatter = new CardFormatter(COLORS, FONTS);
     vietnameseCard =
         VIETNAMESE_CARD_FACTORY.createCard(ImmutableList.of("I do", "tôi làm", "toi6 lam2"));
   }
 
   @Test
-  public void formatCard_immutableField_notFormatted() {
+  void formatCard_immutableField_notFormatted() {
     vietnameseCard.getFields().get(1).setImmutable(true);
     VIETNAMESE_FIELD.setImmutable(true);
 
@@ -52,7 +50,7 @@ public class CardFormatterTest {
   }
 
   @Test
-  public void formatCard_keys6And2_format6And2() {
+  void formatCard_keys6And2_format6And2() {
     cardFormatter.formatCard(vietnameseCard);
 
     assertThat(vietnameseCard.getFields().get(1).getWords().get(0).getValue())

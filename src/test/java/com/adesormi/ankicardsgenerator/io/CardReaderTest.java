@@ -4,54 +4,67 @@ import com.adesormi.ankicardsgenerator.TestUtil;
 import com.adesormi.ankicardsgenerator.cards.Card;
 import com.adesormi.ankicardsgenerator.cards.CardFactory;
 import com.adesormi.ankicardsgenerator.cards.InvalidCardException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.MockitoAnnotations;
 
 import static com.adesormi.ankicardsgenerator.TestUtil.*;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(JUnit4.class)
+
 public class CardReaderTest {
 
-  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+  private AutoCloseable closeable;
   @Mock CardFactory cardFactory;
   private TestUtil testUtil;
   private CardReader cardReader;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
+    closeable = MockitoAnnotations.openMocks(this);
     testUtil = new TestUtil();
   }
 
-  @Test(expected = InvalidCardException.class)
-  public void readLine_nullLine_throwInvalidCardException() {
-    cardReader = new CardReader(cardFactory);
-
-    cardReader.readLine(null);
+  @AfterEach
+  void tearDown() throws Exception {
+    closeable.close();
   }
 
-  @Test(expected = InvalidCardException.class)
-  public void readLine_emptyLine_throwInvalidCardException() {
+  @Test
+  void readLine_nullLine_throwInvalidCardException() {
     cardReader = new CardReader(cardFactory);
 
-    cardReader.readLine("");
+    assertThrows(
+        InvalidCardException.class,
+        () -> cardReader.readLine(null)
+    );
   }
 
-  @Test(expected = InvalidCardException.class)
-  public void readLine_invalidFields_throwInvalidCardException() {
+  @Test
+  void readLine_emptyLine_throwInvalidCardException() {
+    cardReader = new CardReader(cardFactory);
+
+    assertThrows(
+        InvalidCardException.class,
+        () -> cardReader.readLine("")
+    );
+  }
+
+  @Test
+  void readLine_invalidFields_throwInvalidCardException() {
     cardReader = new CardReader(cardFactory);
 
     when(cardFactory.createCard(any())).thenThrow(InvalidCardException.class);
 
-    cardReader.readLine(chineseLine());
+    assertThrows(
+        InvalidCardException.class,
+        () -> cardReader.readLine(chineseLine())
+    );
   }
 
   @Test

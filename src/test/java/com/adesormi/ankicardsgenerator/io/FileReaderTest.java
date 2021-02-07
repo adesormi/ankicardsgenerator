@@ -3,40 +3,50 @@ package com.adesormi.ankicardsgenerator.io;
 import com.adesormi.ankicardsgenerator.TestUtil;
 import com.adesormi.ankicardsgenerator.cards.Card;
 import com.adesormi.ankicardsgenerator.cards.InvalidCardException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.MockitoAnnotations;
 
 import static com.adesormi.ankicardsgenerator.TestUtil.*;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+
 public class FileReaderTest {
 
-  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+  private AutoCloseable closeable;
   @Mock private CardReader cardReader;
   private TestUtil testData;
   private FileReader fileReader;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
+    closeable = MockitoAnnotations.openMocks(this);
     testData = new TestUtil();
   }
 
-  @Test(expected = InvalidInputException.class)
-  public void readCardsFromFile_cardError_throwInvalidInputException() {
-    fileReader = new FileReader(cardReader);
-    when(cardReader.readLine(any())).thenThrow(new InvalidCardException());
-
-    fileReader.readCardsFromFile(testFile("chinese.csv"));
+  @AfterEach
+  void tearDown() throws Exception {
+    closeable.close();
   }
 
   @Test
-  public void readCardsFromFile_chineseFileWith2Lines_twoChineseCards() {
+  void readCardsFromFile_cardError_throwInvalidInputException() {
+    fileReader = new FileReader(cardReader);
+    when(cardReader.readLine(any())).thenThrow(new InvalidCardException());
+
+    assertThrows(
+        InvalidInputException.class,
+        () -> fileReader.readCardsFromFile(testFile("chinese.csv"))
+    );
+  }
+
+  @Test
+  void readCardsFromFile_chineseFileWith2Lines_twoChineseCards() {
     fileReader = new FileReader(cardReader);
     Card card = testData.chineseCard();
     Card card2 = testData.chineseCard2();
@@ -47,7 +57,7 @@ public class FileReaderTest {
   }
 
   @Test
-  public void readCardsFromFile_vietnameseFile1Line_oneVietnameseCard() {
+  void readCardsFromFile_vietnameseFile1Line_oneVietnameseCard() {
     fileReader = new FileReader(cardReader);
     Card card = testData.vietnameseCard();
     when(cardReader.readLine(vietnameseLine())).thenReturn(card);

@@ -2,15 +2,14 @@ package com.adesormi.ankicardsgenerator.cards;
 
 import com.adesormi.ankicardsgenerator.fields.FieldFactory;
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
 
 import static com.adesormi.ankicardsgenerator.fields.FieldType.ENGLISH;
 import static com.adesormi.ankicardsgenerator.fields.FieldType.VIETNAMESE_VNI;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(JUnit4.class)
+
 public class CardFactoryTest {
 
   private static final FieldFactory FIELD_FACTORY = new FieldFactory();
@@ -22,15 +21,18 @@ public class CardFactoryTest {
 
   private CardFactory cardFactory;
 
-  @Test(expected = InvalidCardException.class)
-  public void createCard_tooManyValues_throwInvalidCardException() {
+  @Test
+  void createCard_tooManyValues_throwInvalidCardException() {
     cardFactory = new CardFactory(1, ImmutableList.of(0), ImmutableList.of(ENGLISH, VIETNAMESE_VNI));
 
-    cardFactory.createCard(ImmutableList.of("field1", "field2", "field3"));
+    assertThrows(
+        InvalidCardException.class,
+        () -> cardFactory.createCard(ImmutableList.of("field1", "field2", "field3"))
+    );
   }
 
   @Test
-  public void createCard_2fields1Immutable_success() {
+  void createCard_2fields1Immutable_success() {
     cardFactory = new CardFactory(1, ImmutableList.of(1), ImmutableList.of(ENGLISH, VIETNAMESE_VNI));
     CARD.getFields().get(1).setImmutable(true);
 
