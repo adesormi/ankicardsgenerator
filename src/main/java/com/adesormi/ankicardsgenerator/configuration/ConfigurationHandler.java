@@ -8,19 +8,14 @@ import com.adesormi.ankicardsgenerator.format.Font;
 import com.google.common.collect.ImmutableList;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Properties;
 
 import static com.adesormi.ankicardsgenerator.Constants.COMMA_SEPARATOR;
 
 public class ConfigurationHandler {
-
-  private static final Path DEFAULT_CONFIG_FILE = Paths.get("config.properties").toAbsolutePath();
 
   private static final String FIELDS_PROPERTY = "fields";
   private static final String MASTER_FIELD_PROPERTY = "master";
@@ -34,31 +29,8 @@ public class ConfigurationHandler {
   private Configuration configuration;
   private Properties properties;
 
-  public boolean updateConfiguration(Path configFile) {
-    try {
-      loadConfiguration(configFile);
-      persistProperties();
-    } catch(Exception e) {
-      return false;
-    }
-    return true;
-  }
-
-  private void loadConfiguration(Path configFile) {
+  public Configuration loadConfiguration(Path configFile) {
     loadProperties(configFile);
-    propertiesToConfiguration();
-  }
-
-  private void persistProperties() {
-    try(OutputStream out = new FileOutputStream(DEFAULT_CONFIG_FILE.toFile())) {
-      properties.store(out, null);
-    } catch(IOException ioException) {
-      throw new ConfigurationPersistenceException();
-    }
-  }
-
-  public Configuration loadConfiguration() {
-    loadProperties(DEFAULT_CONFIG_FILE);
     propertiesToConfiguration();
     return configuration;
   }

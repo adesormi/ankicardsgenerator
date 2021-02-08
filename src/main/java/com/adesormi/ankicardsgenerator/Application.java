@@ -20,70 +20,40 @@ public class Application {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
-  private Command command;
-  private Path configFile;
-  private Path workingDirectory;
-
   private FileReader fileReader;
   private CardFormatter cardFormatter;
   private FileWriter fileWriter;
 
   public static void main(String[] args) {
-    new Application().run(args);
-  }
-
-  private void run(String[] args) {
-    LOGGER.info("Starting Anki Cards Generator...");
-    LOGGER.info("");
+    Input input = null;
     try {
-      validateArgs(args);
-      executeCommand();
-    } catch(Exception e) {
+      input = new CommandLineHandler().getInput(args);
+    } catch (InvalidArgsException e) {
       help();
+      System.exit(0);
     }
+    new Application().configure(input.getConfigFilePath()).generateCards(input.getWorkingDirPath());
   }
 
-  private void executeCommand() {
-    switch (command) {
-      case CONFIGURE:
-        configure();
-        break;
-      case GENERATE:
-        setup();
-        generateCards();
-        break;
-      case HELP:
-        help();
-        break;
-      default:
-        throw new InvalidArgsException();
-    }
-  }
-
-  private void configure() {
-    LOGGER.info("Configuring...");
-    ConfigurationHandler configHandler = new ConfigurationHandler();
-    boolean updated = configHandler.updateConfiguration(configFile);
-    LOGGER.info(updated ? "Configuration successfully updated" : "An error occurred during the configuration update.");
-  }
-
-  private void setup() {
-    Configuration configuration = new ConfigurationHandler().loadConfiguration();
+  private Application configure(Path configFile) {
+    LOGGER.info("Setting up configuration...");
+    Configuration configuration = new ConfigurationHandler().loadConfiguration(configFile);
     fileReader = new FileReader(new CardReader(configuration.getCardFactory()));
     cardFormatter = configuration.getCardFormatter();
     fileWriter = new FileWriter(new CardWriter());
+    return this;
   }
 
-  private void generateCards() {
+  private void generateCards(Path workingDirectory) {
     LOGGER.info("Generating cards...");
-    getFilesFromWorkingDirectory().forEach(f -> {
+    getFilesFromWorkingDirectory(workingDirectory).forEach(f -> {
       ImmutableList<Card> cards = fileReader.readCardsFromFile(f);
       cards.forEach(cardFormatter::formatCard);
       fileWriter.writeCardsToFile(getOutputFile(f), cards);
     });
   }
 
-  private List<Path> getFilesFromWorkingDirectory() {
+  private List<Path> getFilesFromWorkingDirectory(Path workingDirectory) {
     try {
       return Files.list(workingDirectory)
                   .filter(Files::isRegularFile)
@@ -103,42 +73,8 @@ public class Application {
     return Paths.get(filePath.getParent().toString(), outputFileName);
   }
 
-  private void help() {
-    LOGGER.info("Usage: ./ankicardsgenerator <command> <args>");
-    LOGGER.info("");
-    LOGGER.info("  - ./ankicardsgenerator configure <path-to-file>");
-    LOGGER.info("  - ./ankicardsgenerator generate <input-directory>");
-    LOGGER.info("  - ./ankicardsgenerator help");
-  }
-
-  private void validateArgs(String[] args) {
-    if (args == null || args.length <= 0 || args.length > 2) throw new InvalidArgsException();
-    switch (args[0]) {
-      case "configure":
-        command = Command.CONFIGURE;
-        configFile = getConfigFilePath(args);
-        break;
-      case "generate":
-        command = Command.GENERATE;
-        workingDirectory = getCardsDirPath(args);
-        break;
-      case "help":
-        command = Command.HELP;
-        break;
-      default:
-        throw new InvalidArgsException();
-    }
-  }
-
-  private Path getConfigFilePath(String[] args) {
-    Path file = Paths.get(args[1]);
-    if (!file.toFile().isFile()) throw new InvalidArgsException();
-    return file;
-  }
-
-  private Path getCardsDirPath(String[] args) {
-    Path dir = Paths.get(args[1]);
-    if (!dir.toFile().isDirectory()) throw new InvalidArgsException();
-    return dir;
+  private static void help() {
+    System.out.println(
+        "\nUsage: ./ankicardsgenerator [-c, --configuration] <config> [-w, --working_dir] <dir>\n");
   }
 }
