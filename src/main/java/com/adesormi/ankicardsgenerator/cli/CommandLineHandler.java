@@ -1,8 +1,12 @@
-package com.adesormi.ankicardsgenerator;
+package com.adesormi.ankicardsgenerator.cli;
 
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommandLineHandler {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineHandler.class);
 
   private static final String CONFIGURATION_OPTION = "settings";
   private static final String WORKING_DIR_OPTION = "working_dir";
@@ -15,14 +19,13 @@ public class CommandLineHandler {
     options = createOptions();
   }
 
-  public Input getInput(String[] args) {
+  public Input parseInput(String[] args) {
+    LOGGER.info("Parsing input arguments");
     try {
       CommandLine line = parser.parse(options, args);
       validateOptions(line);
-
-      String configurationFileStr = line.getOptionValue(CONFIGURATION_OPTION);
-      String workingDirStr = line.getOptionValue(WORKING_DIR_OPTION);
-      return new Input(configurationFileStr, workingDirStr);
+      return new Input(line.getOptionValue(CONFIGURATION_OPTION),
+                       line.getOptionValue(WORKING_DIR_OPTION));
     } catch(ParseException e) {
       throw new InvalidArgsException();
     }
@@ -37,11 +40,11 @@ public class CommandLineHandler {
 
   private void validateOptions(CommandLine line) {
     if (!line.hasOption(CONFIGURATION_OPTION)) {
-      throw new InvalidArgsException("Need to provide option -c, --configuration");
+      throw new InvalidArgsException();
     }
 
     if (!line.hasOption(WORKING_DIR_OPTION)) {
-      throw new InvalidArgsException("Need to provide option -w, --working_dir");
+      throw new InvalidArgsException();
     }
   }
 }

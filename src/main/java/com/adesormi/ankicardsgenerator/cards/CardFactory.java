@@ -4,10 +4,14 @@ import com.adesormi.ankicardsgenerator.fields.Field;
 import com.adesormi.ankicardsgenerator.fields.FieldFactory;
 import com.adesormi.ankicardsgenerator.fields.FieldType;
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
 public class CardFactory {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(CardFactory.class);
 
   private final FieldFactory fieldFactory = new FieldFactory();
   private final int masterFieldIndex;
@@ -26,6 +30,7 @@ public class CardFactory {
   }
 
   public Card createCard(ImmutableList<String> fieldsValues) {
+    LOGGER.debug("Creating cards from fields: " + fieldsValues);
     if (fieldsValues.size() != fieldsNumber) throw new InvalidCardException();
     ImmutableList.Builder<Field> builder = ImmutableList.builder();
     for (int i = 0; i < fieldsValues.size(); ++i) {

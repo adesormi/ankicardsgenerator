@@ -6,6 +6,8 @@ import com.adesormi.ankicardsgenerator.format.CardFormatter;
 import com.adesormi.ankicardsgenerator.format.Color;
 import com.adesormi.ankicardsgenerator.format.Font;
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,6 +18,8 @@ import java.util.Properties;
 import static com.adesormi.ankicardsgenerator.Constants.COMMA_SEPARATOR;
 
 public class ConfigurationHandler {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationHandler.class);
 
   private static final String FIELDS_PROPERTY = "fields";
   private static final String MASTER_FIELD_PROPERTY = "master";
@@ -30,6 +34,7 @@ public class ConfigurationHandler {
   private Properties properties;
 
   public Configuration loadConfiguration(Path configFile) {
+    LOGGER.info("Reading configuration...");
     loadProperties(configFile);
     propertiesToConfiguration();
     return configuration;
@@ -51,6 +56,7 @@ public class ConfigurationHandler {
   }
 
   private CardFactory setupCardFactory() {
+    LOGGER.info("Setting up the CardFactory");
     ImmutableList<FieldType> fieldTypes = getFieldTypesFromProperties();
     int masterFieldIndex = getMasterFieldIndexFromProperties();
     ImmutableList<Integer> immutableFieldsIndex = getImmutableFieldsIndexFromProperties();
@@ -117,6 +123,7 @@ public class ConfigurationHandler {
   }
 
   private CardFormatter setupCardFormatter() {
+    LOGGER.info("Setting up the CardFormatter");
     numberOfKeys = getNumberOfKeysFromProperties();
     ImmutableList<Color> colors = getColorsFromProperties();
     ImmutableList<Font> fonts = getFontsFromProperties();

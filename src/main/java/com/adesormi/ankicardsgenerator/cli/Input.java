@@ -1,4 +1,4 @@
-package com.adesormi.ankicardsgenerator;
+package com.adesormi.ankicardsgenerator.cli;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
