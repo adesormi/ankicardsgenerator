@@ -8,7 +8,7 @@ public class CommandLineHandler {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CommandLineHandler.class);
 
-  private static final String CONFIGURATION_OPTION = "settings";
+  private static final String CONFIGURATION_OPTION = "configuration";
   private static final String WORKING_DIR_OPTION = "working_dir";
 
   private final CommandLineParser parser;

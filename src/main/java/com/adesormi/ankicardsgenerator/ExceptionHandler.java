@@ -2,12 +2,16 @@ package com.adesormi.ankicardsgenerator;
 
 public class ExceptionHandler {
 
+  private static final String HELP_MESSAGE =
+      "\n>> Usage: ./ankicardsgenerator -c <config> -w <working_dir>\n"
+          + "\nAll options need to be provided:"
+          + "\n  > the configuration file:"
+          + "\n      -c, --configuration <path-to-file>"
+          + "\n  > the working directory containing the cards to format:"
+          + "\n      -w, --working_dir <path-to-dir>\n";
+
+
   public void showHelp() {
-    System.out.println("\n>> Usage: ./ankicardsgenerator -c <config> -w <working_dir>\n");
-    System.out.println("All options need to be provided:");
-    System.out.println("  > the configuration file:");
-    System.out.println("      -c, --configuration <path-to-file>");
-    System.out.println("  > the working directory containing the cards to format:");
-    System.out.println("      -w, --working_dir <path-to-dir>\n");
+    System.out.println(HELP_MESSAGE);
   }
 }

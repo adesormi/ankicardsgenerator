@@ -11,6 +11,8 @@ import static com.adesormi.ankicardsgenerator.fields.FieldType.*;
 
 public class TestUtil {
 
+  private static final String TEST_RESOURCES_DIR = "src/test/resources/";
+
   public CardFactory chineseCardFactory() {
     return new CardFactory(3, ImmutableList.of(0), ImmutableList.of(ENGLISH, CHINESE, CHINESE_PINYIN));
   }
@@ -64,6 +66,10 @@ public class TestUtil {
   }
 
   public static Path testFile(String fileName) {
-    return Paths.get("src/test/resources/", fileName);
+    return Paths.get(TEST_RESOURCES_DIR, fileName);
+  }
+
+  public static String testFileAsStr(String fileName) {
+    return TEST_RESOURCES_DIR + fileName;
   }
 }
