@@ -8,7 +8,7 @@ public class Field {
 
   private final ImmutableList<Word> words;
   private final FieldType fieldType;
-  private final ImmutableList<Integer> keys;
+  private final ImmutableList<ImmutableList<Integer>> keys;
   private boolean isImmutable;
 
   Field(FieldType fieldType, String value) {
@@ -20,7 +20,7 @@ public class Field {
 
   public ImmutableList<Word> getWords() { return words; }
 
-  public ImmutableList<Integer> getKeys() { return keys; }
+  public ImmutableList<ImmutableList<Integer>> getKeys() { return keys; }
 
   public String wordsSeparator() {
     return fieldType.getWordsParser().wordsSeparator();
@@ -42,7 +42,7 @@ public class Field {
     return fieldType.getWordsParser().parseWords(value);
   }
 
-  private ImmutableList<Integer> parseKeys() {
+  private ImmutableList<ImmutableList<Integer>> parseKeys() {
     return fieldType.getKeysParser().parseKeys(words);
   }
 

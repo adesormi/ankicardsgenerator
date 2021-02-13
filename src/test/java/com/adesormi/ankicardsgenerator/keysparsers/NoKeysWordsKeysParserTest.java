@@ -10,8 +10,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 public class NoKeysWordsKeysParserTest {
 
-  private static final Word WORD_WITH_NOKEY = new Word("word");
-  private static final Word OTHER_WORD_WITH_NOKEY = new Word("otherWord");
+  private static final Word WORD_WITH_NO_KEY = new Word("word");
+  private static final Word WORD_WITH_KEY1 = new Word("word1");
 
   private NoKeysWordsKeysParser keysParser;
 
@@ -21,13 +21,25 @@ public class NoKeysWordsKeysParserTest {
   }
 
   @Test
-  void parseKeys_noWord_mapIsEmpty() {
+  void parseKeys_noWord_listIsEmpty() {
     assertThat(keysParser.parseKeys(ImmutableList.of())).isEmpty();
   }
 
   @Test
-  void parseKeys_2WordsWithNoKeys_mapWithKeys0And0() {
-    assertThat(keysParser.parseKeys(ImmutableList.of(WORD_WITH_NOKEY, OTHER_WORD_WITH_NOKEY)))
-        .containsExactly(0, 0);
+  void parseKeys_wordWithNoKey_listWith1EmptyList() {
+    assertThat(keysParser.parseKeys(ImmutableList.of(WORD_WITH_NO_KEY)))
+        .containsExactly(ImmutableList.of());
+  }
+
+  @Test
+  void parseKeys_wordWithKey1_listWith1EmptyList() {
+    assertThat(keysParser.parseKeys(ImmutableList.of(WORD_WITH_KEY1)))
+        .containsExactly(ImmutableList.of());
+  }
+
+  @Test
+  void parseKeys_wordWithNoKeyAndWordWithKey1_listWith2EmptyLists() {
+    assertThat(keysParser.parseKeys(ImmutableList.of(WORD_WITH_NO_KEY, WORD_WITH_KEY1)))
+        .containsExactly(ImmutableList.of(), ImmutableList.of());
   }
 }

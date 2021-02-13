@@ -6,9 +6,9 @@ import com.google.common.collect.ImmutableList;
 public class NoKeysWordsKeysParser implements KeysParser {
 
   @Override
-  public ImmutableList<Integer> parseKeys(ImmutableList<Word> words) {
-    ImmutableList.Builder<Integer> builder = ImmutableList.builder();
-    words.forEach(w -> builder.add(0));
+  public ImmutableList<ImmutableList<Integer>> parseKeys(ImmutableList<Word> words) {
+    ImmutableList.Builder<ImmutableList<Integer>> builder = ImmutableList.builder();
+    words.forEach(w -> builder.add(ImmutableList.of()));
     return builder.build();
   }
 }

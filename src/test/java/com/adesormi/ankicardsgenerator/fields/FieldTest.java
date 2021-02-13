@@ -11,11 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FieldTest {
 
   private static final String VALUE = "word1 word2";
-  private static final ImmutableList<Word> WORDS = ImmutableList.of(
-      new Word("word1"),
-      new Word("word2")
-  );
-  private static final ImmutableList<Integer> KEYS = ImmutableList.of(1, 2);
+  private static final ImmutableList<Word> WORDS =
+      ImmutableList.of(new Word("word1"), new Word("word2"));
+  private static final ImmutableList<ImmutableList<Integer>> KEYS =
+      ImmutableList.of(ImmutableList.of(1), ImmutableList.of(2));
 
   @Test
   void constructor_nullValue_throwInvalidValueException() {

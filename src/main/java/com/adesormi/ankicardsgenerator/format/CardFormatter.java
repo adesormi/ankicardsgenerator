@@ -19,7 +19,7 @@ public class CardFormatter {
     card.getFields().forEach(field -> formatField(field, card.getMasterField().getKeys()));
   }
 
-  private void formatField(Field field, ImmutableList<Integer> keys) {
+  private void formatField(Field field, ImmutableList<ImmutableList<Integer>> keys) {
     if (field.isImmutable()) return;
     ImmutableList<Word> words = field.getWords();
     for (int i = 0; i < keys.size(); ++i) {
@@ -27,9 +27,11 @@ public class CardFormatter {
     }
   }
 
-  private void formatWord(Word word, Integer key) {
-    word.setForm(fonts.get(key));
-    word.setColor(colors.get(key));
+  private void formatWord(Word word, ImmutableList<Integer> keys) {
+    keys.forEach(key -> {
+      word.setForm(fonts.get(key));
+      word.setColor(colors.get(key));
+    });
   }
 
   @Override

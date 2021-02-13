@@ -2,6 +2,8 @@ package com.adesormi.ankicardsgenerator.wordsparsers;
 
 import com.google.common.collect.ImmutableList;
 
+import static com.adesormi.ankicardsgenerator.Constants.EMPTY;
+
 public class LogographicWordsParser implements WordsParser {
 
   @Override
@@ -14,6 +16,6 @@ public class LogographicWordsParser implements WordsParser {
   }
 
   public String wordsSeparator() {
-    return "";
+    return EMPTY;
   }
 }

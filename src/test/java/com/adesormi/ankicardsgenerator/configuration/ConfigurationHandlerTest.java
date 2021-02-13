@@ -125,6 +125,15 @@ public class ConfigurationHandlerTest {
   }
 
   @Test
+  void loadConfiguration_propertiesWithNTooLargeNumberOfKeys_throwsInvalidNumberOfKeysException() {
+    assertThrows(
+        InvalidNumberOfKeysException.class,
+        () -> configurationHandler.loadConfiguration(
+            testFile("tooLargeNumberOfKeys.properties"))
+    );
+  }
+
+  @Test
   void loadConfiguration_propertiesWithZeroAsNumberOfKeys_throwsInvalidNumberOfKeysException() {
     assertThrows(
         InvalidNumberOfKeysException.class,

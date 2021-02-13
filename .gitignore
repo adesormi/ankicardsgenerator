@@ -13,6 +13,7 @@ out/
 *.rar
 .gradle
 build/
+e2etest/
 gradle-app.setting
 !gradle-wrapper.jar
 **/build/

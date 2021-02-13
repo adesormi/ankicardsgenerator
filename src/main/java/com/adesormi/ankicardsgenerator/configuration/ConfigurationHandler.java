@@ -145,7 +145,7 @@ public class ConfigurationHandler {
   private int parseNumberOfKeys(String numberOfKeysStr) {
     try {
       int numberOfKeys = Integer.parseInt(numberOfKeysStr);
-      if (numberOfKeys <= 0) throw new InvalidNumberOfKeysException();
+      if (numberOfKeys <= 0 || numberOfKeys > 9) throw new InvalidNumberOfKeysException();
       return numberOfKeys;
     } catch(NumberFormatException nfE) {
       throw new InvalidNumberOfKeysException();
